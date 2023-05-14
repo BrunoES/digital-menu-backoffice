@@ -5,53 +5,40 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="./tabela.js"></script>
         <script type="text/javascript">
+            const ENDPOINT = 'http://localhost:8080/menu-items';
+            const msgErro = "Preencha todos os campos do produto.";
             var sequence = 0;            
             var pessoas = [];
+            var base64Imgs = [];
 
-            function salvar() {
-                const msgErro = "Preencha todos os campos do produto.";
+            function save() {
+                var id = document.getElementById('id').value;
                 var name = document.getElementById('name').value;
                 var description = document.getElementById('description').value;
                 var price = document.getElementById('price').value;
                 var photo = document.getElementById('photo').files[0];
 
-                console.log(photo);
+                console.log("id: " + id);
 
-                var base64Img = "";
+                if(id == "") {
+                    saveNewItem(photo, name, description, price);
+                } else {
+                    editExistingItem(photo, id, name, description, price);
+                }
+            }
 
-                console.log(photo);
-
+            function saveNewItem(photo, name, description, price) {
                 if(photo !== undefined) {
                     var reader = new FileReader();
-                    var imgName = photo.name;
                     var imgType = photo.type;
+                    var base64Img = "";
 
                     reader.readAsDataURL(photo);
                     reader.onload = function () {
                         base64Img =  reader.result;
 
-                        console.log(name);
-                        console.log(description);
-                        console.log(price);
-                        console.log(base64Img);
-
                         if(name != "" && description != "" && price != "" && base64Img != "") {
-                         axios.post('http://localhost:8080/menu-items', {
-                                name,
-                                description,
-                                price,
-                                image : {
-                                    base64: base64Img,
-                                    name: imgName,
-                                    type: imgType
-                                }
-                            })
-                            .then(function (response) {
-                                console.log(response);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                            callPost(id, name, description, price, image);
                         } else {
                             alert(msgErro);
                         }
@@ -59,6 +46,70 @@
                 } else {
                     alert(msgErro);
                 }
+            }
+
+            function editExistingItem(photo, id, name, description, price) {
+                if(name != "" && description != "" && price != "") {
+                    if(photo !== undefined) {
+                        var reader = new FileReader();
+                        var imgType = photo.type;
+                        reader.readAsDataURL(photo);
+
+                        reader.onload = function () {
+                            var image = {
+                                base64: reader.result,
+                                type: imgType
+                            };
+                            callPut(id, name, description, price, image);
+                        };
+                    } else {
+                        var image = {
+                                base64: "",
+                                type: ""
+                            };
+                        callPut(id, name, description, price, image);
+                    }
+                } else {
+                    alert(msgErro);
+                }
+            }
+
+            function callPost(id, name, description, price, image) {
+                axios.post(ENDPOINT, {
+                        name,
+                        description,
+                        price,
+                        image : {
+                            base64: base64Img,
+                            type: imgType
+                        }
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                        cleanForm();
+                        getProdutos();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
+            function callPut(id, name, description, price, image) {
+                axios.put(ENDPOINT, {
+                        id,
+                        name,
+                        description,
+                        price,
+                        image
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                        cleanForm();
+                        getProdutos();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
 
             function getBase64(file) {
@@ -73,59 +124,71 @@
                 };
             }
 
-            function excluirPessoa(id) {
-                pessoas[id] = undefined;
-                consultarPessoas();
+            function deleteProduct(id) {
+                axios.delete(`${ENDPOINT}/${id}`)
+                    .then(function (response) {
+                        console.dir(response);
+                        getProdutos();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .finally(function () {
+                    });
             }
 
-            function editarPessoa(id) {
+            function editProduct(id, name, description, price) {
+                cleanForm();
                 document.getElementById('id').value = id;
-                document.getElementById('nome').value = "";
-                document.getElementById('nome').focus();
+                document.getElementById('name').value = name;
+                document.getElementById('description').value = description;
+                document.getElementById('price').value = price;
+                document.getElementById('productImage').src = `data:image/png;base64,${base64Imgs[id]}`;
+                document.getElementById('name').focus();
             }
 
-            function limparFormulario() {
+            function cleanForm() {
                 document.getElementById('id').value = "";
-                document.getElementById('nome').value = "";
-                document.getElementById('nome').focus();
+                document.getElementById('name').value = "";
+                document.getElementById('description').value = "";
+                document.getElementById('price').value = "";
+                document.getElementById('photo').value = "";
+                document.getElementById('name').focus();
             }
 
-            function consultarPessoas() {
-                var nomePessoa = document.getElementById('nome').value;
-                var buscarPorNome = false;
-
-                if(nomePessoa) {
-                    buscarPorNome = true;
-                }
-
+            function getProdutos() {
                 limpaTabela();
 
-                var i;
-                var id;
-                var nome;
-                for(i = 0; i < pessoas.length; i++) {
-                    if(pessoas[i]) {
-                        id = pessoas[i][0];
-                        nome = pessoas[i][1];
-                        if((buscarPorNome && nome == nomePessoa) || (!buscarPorNome)) {
-                            inserirPessoa(id, nome);
-                        }
-                    }
-                }
+                axios.get(ENDPOINT)
+                    .then(function (response) {
+                        var menuItems = response.data;
+                        console.dir(menuItems);
+                        base64Imgs = [];
+                        menuItems.forEach(element => {
+                            var item = element.menuItem;
+                            insertProductTable(item.id, item.name, item.description, item.price);
+                            base64Imgs[item.id] = element.base64Img;
+                            console.log();
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .finally(function () {
+                    });
             }
 
             function limpaTabela() {
                 var tableHeaderRowCount = 1;
-                var table = document.getElementById("tabela_pessoas");
+                var table = document.getElementById("product_table");
                 var rowCount = table.rows.length;
                 for (var i = tableHeaderRowCount; i < rowCount; i++) {
                     table.deleteRow(tableHeaderRowCount);
                 }
             }
-
         </script>
     </head>
-    <body>
+    <body onload="getProdutos();">
         <div class="form-group m-5">
                 <h1>Cadastro de Itens</h1>
                 <label for="id">ID:</label>
@@ -143,23 +206,30 @@
                 <label for="photo">Foto do Produto:</label>
                 <input type="file" class="form-control-file" id="photo"  accept="image/jpeg, image/png, image/jpg">
                 <br>
+                <img id="productImage"></img>
                 <br>
-                <button type="button" class="btn btn-success" onclick="salvar();">Salvar</button>
-                <button type="button" class="btn btn-primary" onclick="consultarPessoas();">Consultar</button>
-                <button type="button" class="btn btn-warning" onclick="limparFormulario();">Novo</button>
+                <br>
+                <button type="button" class="btn btn-success" onclick="save();">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="getProdutos();">Consultar</button>
+                <button type="button" class="btn btn-warning" onclick="cleanForm();">Novo</button>
 
             <br>
-            <table class="table m-4" id="tabela_pessoas">
-                <thead>
-                    <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="overflow-auto h-50">
+                <table class="table m-4" id="product_table">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Excluir</th>
+                        <th scope="col">Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>
