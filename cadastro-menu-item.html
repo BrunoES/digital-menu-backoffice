@@ -299,27 +299,28 @@
     <body onload="init()">
         <div class="form-group m-5">
             <h2>Cadastro de Itens</h2>
-            <label for="id">ID:</label>
+            <label for="id" class="mt-2">ID:</label>
             <input type="number" class="form-control" id="id" readonly/>
-            <label for="name">Nome do Item:</label>
+            <label for="name" class="mt-2">Nome do Item:</label>
             <input type="text" class="form-control" id="name" maxlength="60"/>
-            <label for="description">Descrição do Item:</label>
+            <label for="description" class="mt-2">Descrição do Item:</label>
             <textarea class="form-control" id="description" maxlength="255"></textarea>
-            <label for="price">Preço R$:</label>
+            <label for="price" class="mt-2">Preço R$:</label>
             <input type="number" class="form-control" id="price" oninput="maskPrice(event)"/>
-            <br/>
-            <label for="photo">Foto do Produto:</label>
+            <label for="photo" class="mt-2">Foto do Produto:</label>
             <input type="file" class="form-control" id="photo" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
             <img id="productImage" class="rounded float-left w-25 mt-3" alt="Responsive image" src="./imgs/slider-icon.png"></img>
             <br/>
-            <button type="button" class="btn btn-success" onclick="save();">Salvar</button>
-            <button type="button" class="btn btn-primary" onclick="getProdutos();">Consultar</button>
-            <button type="button" class="btn btn-warning" onclick="cleanForm();">Novo</button>
+            <div class="m-2">
+                <button type="button" class="btn btn-success" onclick="save();">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="getProdutos();">Consultar</button>
+                <button type="button" class="btn btn-warning" onclick="cleanForm();">Novo</button>
+            </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
             <div id="liveDialogPlaceholder" class="fixed-bottom">
             </div>
-            <br>
+            <br/>
             <div class="overflow-auto h-50">
                 <table class="table m-4" id="product_table">
                     <thead>
