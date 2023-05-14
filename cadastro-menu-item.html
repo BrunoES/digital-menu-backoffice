@@ -6,10 +6,61 @@
         <script type="text/javascript" src="./tabela.js"></script>
         <script type="text/javascript">
             const ENDPOINT = 'http://localhost:8080/menu-items';
-            const msgErro = "Preencha todos os campos do produto.";
+            const DEFAULT_IMG = "./imgs/slider-icon.png";
+            const MSG_FORM_ERROR = "Preencha todos os campos do produto.";
+            const MSG_SUCCESS_SAVE = "Produto salvo com sucesso";
+            const MSG_SUCCESS_CHANGE = "Produto alterado com sucesso";
+            const MSG_SUCCESS_DELETE = "Produto deletado com sucesso";
+            const TIMEOUT_MSG_DANGER = 4500;
+            const TIMEOUT_MSG_SUCCESS = 3000;
+            const MSG_TYPE_SUCCESS = 'success';
+            const MSG_TYPE_DANGER = 'danger';
+
             var sequence = 0;            
             var pessoas = [];
             var base64Imgs = [];
+
+            var loadPreview = function(event) {
+                var output = document.getElementById('productImage');
+                output.src = URL.createObjectURL(event.target.files[0]);
+            };
+
+            function init() {
+                getProdutos();
+            }
+
+            function alertMessage(type, message, timeout) {
+                const wrapper = document.createElement('div');
+
+                wrapper.innerHTML = [
+                    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                    `<span class="fs-5">${message}</span>`,
+                    '</div>'
+                ].join('')
+
+                document.getElementById('liveAlertPlaceholder').append(wrapper)
+
+                setTimeout(function () {
+                    document.getElementById('liveAlertPlaceholder').innerHTML = "";
+                }, timeout);
+            }
+
+            var maskPrice = function(event) {
+                const defaultValue = '000.00';
+                var value = event.target.value.replace(".", "");
+                var formattedValue = parseFloat(value / 100).toFixed(2);
+                
+                if(formattedValue.length > 6) {
+                    formattedValue = parseFloat(formattedValue / 10).toFixed(2);
+                }
+
+                document.getElementById('price').value = formattedValue;
+            };
+
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            });
 
             function save() {
                 var id = document.getElementById('id').value;
@@ -38,13 +89,17 @@
                         base64Img =  reader.result;
 
                         if(name != "" && description != "" && price != "" && base64Img != "") {
+                            var image = {
+                                base64: base64Img,
+                                type: imgType
+                            };
                             callPost(id, name, description, price, image);
                         } else {
-                            alert(msgErro);
+                            alertMessage(MSG_TYPE_DANGER, MSG_FORM_ERROR, TIMEOUT_MSG_DANGER);
                         }
                     };
                 } else {
-                    alert(msgErro);
+                    alertMessage(MSG_TYPE_DANGER, MSG_FORM_ERROR, TIMEOUT_MSG_DANGER);
                 }
             }
 
@@ -70,7 +125,7 @@
                         callPut(id, name, description, price, image);
                     }
                 } else {
-                    alert(msgErro);
+                    alertMessage(MSG_TYPE_DANGER, MSG_FORM_ERROR, TIMEOUT_MSG_DANGER);
                 }
             }
 
@@ -79,13 +134,11 @@
                         name,
                         description,
                         price,
-                        image : {
-                            base64: base64Img,
-                            type: imgType
-                        }
+                        image
                     })
                     .then(function (response) {
                         console.log(response);
+                        alertMessage(MSG_TYPE_SUCCESS, MSG_SUCCESS_SAVE, TIMEOUT_MSG_SUCCESS);
                         cleanForm();
                         getProdutos();
                     })
@@ -104,6 +157,7 @@
                     })
                     .then(function (response) {
                         console.log(response);
+                        alertMessage(MSG_TYPE_SUCCESS, MSG_SUCCESS_CHANGE, TIMEOUT_MSG_SUCCESS);
                         cleanForm();
                         getProdutos();
                     })
@@ -128,6 +182,8 @@
                 axios.delete(`${ENDPOINT}/${id}`)
                     .then(function (response) {
                         console.dir(response);
+                        alertMessage(MSG_TYPE_DANGER, MSG_SUCCESS_DELETE, TIMEOUT_MSG_DANGER);
+                        cleanForm();
                         getProdutos();
                     })
                     .catch(function (error) {
@@ -148,11 +204,13 @@
             }
 
             function cleanForm() {
+                console.log(formatter.format(2500));
                 document.getElementById('id').value = "";
                 document.getElementById('name').value = "";
                 document.getElementById('description').value = "";
                 document.getElementById('price').value = "";
                 document.getElementById('photo').value = "";
+                document.getElementById('productImage').src = DEFAULT_IMG;
                 document.getElementById('name').focus();
             }
 
@@ -188,27 +246,29 @@
             }
         </script>
     </head>
-    <body onload="getProdutos();">
+    <body onload="init()">
         <div class="form-group m-5">
                 <h1>Cadastro de Itens</h1>
                 <label for="id">ID:</label>
                 <input type="number" class="form-control" id="id" readonly/>
                 <br>
                 <label for="nome">Nome do Item:</label>
-                <input type="text" class="form-control" id="name" />
+                <input type="text" class="form-control" id="name" maxlength="60"/>
                 <br>
                 <label for="description">Descrição do Item:</label>
-                <textarea class="form-control" id="description"></textarea>
+                <textarea class="form-control" id="description" maxlength="255"></textarea>
                 <br>
                 <label for="price">Preço:</label>
-                <input type="number" class="form-control" id="price" />
+                <input type="number" class="form-control" id="price" oninput="maskPrice(event)"/>
                 <br>
                 <label for="photo">Foto do Produto:</label>
-                <input type="file" class="form-control-file" id="photo"  accept="image/jpeg, image/png, image/jpg">
+                <input type="file" class="form-control-file" id="photo" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
                 <br>
-                <img id="productImage"></img>
+                <img id="productImage" class="rounded float-left w-25 mt-3" alt="Responsive image" src="./imgs/slider-icon.png"></img>
                 <br>
                 <br>
+                <div id="liveAlertPlaceholder" class="fixed-bottom">
+                </div>
                 <button type="button" class="btn btn-success" onclick="save();">Salvar</button>
                 <button type="button" class="btn btn-primary" onclick="getProdutos();">Consultar</button>
                 <button type="button" class="btn btn-warning" onclick="cleanForm();">Novo</button>
