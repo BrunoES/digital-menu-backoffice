@@ -14,30 +14,11 @@ function insertProductTable(id, name, description, price) {
     var columnPrice = createTextColumn(price);
     row.appendChild(columnPrice);
 
-    var deleteButton = createHTMLButton("Excluir", `onClickDelete('${id}')`);
+    var deleteButton = createHTMLButton("Excluir", `onClickDelete('${id}')`, RED);
     row.appendChild(deleteButton);
 
-    console.log(`editProduct(${id}, ${name}, ${description}, ${price})`);
-    var editButton = createHTMLButton("Editar", `editProduct('${id}', '${name}', '${description}', '${cleanPrice(price)}')`);
+    var editButton = createHTMLButton("Editar", `editProduct('${id}', '${name}', '${description}', '${cleanPrice(price)}')`, GREEN);
     row.appendChild(editButton);
 
     tabBody.appendChild(row);
-}
-
-function createTextColumn(valor) {
-    var cell = document.createElement("td");
-    var node=document.createTextNode(valor);
-    cell.appendChild(node);
-    return cell;
-}
-
-function createHTMLButton(name, onClick) {
-    var cell = document.createElement("td");
-    var button = document.createElement("button");
-    button.setAttribute("onClick", onClick);
-    //button.setAttribute("class", "btn btn-success");
-    var node=document.createTextNode(name);
-    button.appendChild(node);
-    cell.appendChild(button);
-    return cell;
 }

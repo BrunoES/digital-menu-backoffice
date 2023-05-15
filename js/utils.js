@@ -1,9 +1,12 @@
+const MSG_READY_TO_EDIT = "Altere os campos do formulário e em seguida salve suas alterações.";
 const TIMEOUT_MSG_DANGER = 4500;
 const TIMEOUT_MSG_SUCCESS = 3000;
 const TIMEOUT_MSG_DIALOG = 10000;
+const TIMEOUT_MSG_ADVISE = 5000;
 const MSG_TYPE_SUCCESS = 'success';
 const MSG_TYPE_DANGER = 'danger';
 const MSG_TYPE_WARNING = 'warning';
+const MSG_TYPE_PRIMARY= 'primary';
 
 // -- Alert & Dialogs
 function closeAlerts() {
