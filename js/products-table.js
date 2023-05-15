@@ -1,6 +1,6 @@
 function insertProductTable(id, name, description, price) {
     tabBody=document.getElementById("product_table");
-    row=document.createElement("tr");
+    var row= createRow();
 
     var columnId = createTextColumn(id);
     row.appendChild(columnId);

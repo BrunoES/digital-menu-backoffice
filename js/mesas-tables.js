@@ -1,7 +1,6 @@
 function insertMesasTable(tableNumber, complement) {
     tabBody=document.getElementById("mesas_table");
-    row=document.createElement("tr");
-    row.setAttribute("style", "border-bottom: 1px solid gray");
+    var row= createRow();
 
     var columnTableNumber = createTextColumn(tableNumber);
     row.appendChild(columnTableNumber);

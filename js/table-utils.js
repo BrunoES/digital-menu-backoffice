@@ -1,6 +1,12 @@
 const GREEN = '#118c05';
 const RED = '#Ea2d30';
 
+function createRow() {
+    var row=document.createElement("tr");
+    row.setAttribute("style", "border-bottom: 1px solid #ECF1EC");
+    return row;
+}
+
 function createTextColumn(valor) {
     var cell = document.createElement("td");
     var node=document.createTextNode(valor);
