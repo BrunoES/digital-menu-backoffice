@@ -4,6 +4,7 @@
         <title>Cadastro de Itens </title>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="./js/products-table.js"></script>
+        <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
             const ENDPOINT = 'http://192.168.0.18:8080/menu-items';
             const DEFAULT_IMG = "./imgs/slider-icon.png";
@@ -12,12 +13,6 @@
             const MSG_SUCCESS_CHANGE = "Produto alterado com sucesso";
             const MSG_SUCCESS_DELETE = "Produto deletado com sucesso";
             const MSG_DIALOG_DELETE = "Tem certeza que deseja deletar este produto?";
-            const TIMEOUT_MSG_DANGER = 4500;
-            const TIMEOUT_MSG_SUCCESS = 3000;
-            const TIMEOUT_MSG_DIALOG = 10000;
-            const MSG_TYPE_SUCCESS = 'success';
-            const MSG_TYPE_DANGER = 'danger';
-            const MSG_TYPE_WARNING = 'warning';
 
             var sequence = 0;            
             var pessoas = [];
@@ -57,55 +52,6 @@
 
                 document.getElementById('price').value = formattedValue;
             };
-
-            // -- Alert & Dialogs
-            function closeAlerts() {
-                document.getElementById('liveAlertPlaceholder').innerHTML = "";
-            }
-
-            function closeDialogs() {
-                document.getElementById('liveDialogPlaceholder').innerHTML = "";
-            }
-
-            function alertMessage(type, message, timeout) {
-                closeAlerts();
-                closeDialogs();
-
-                const wrapper = document.createElement('div');
-
-                wrapper.innerHTML = [
-                    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-                    `<span class="fs-5">${message}</span>`,
-                    '</div>'
-                ].join('')
-
-                document.getElementById('liveAlertPlaceholder').append(wrapper)
-
-                setTimeout(function () {
-                    closeAlerts();
-                }, timeout);
-            }
-
-            function confirmDialog(type, message, timeout, confirmationFunction) {
-                closeAlerts();
-                closeDialogs();
-
-                const wrapper = document.createElement('div');
-
-                wrapper.innerHTML = [
-                    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-                    `<span class="fs-5">${message}</span>  `,
-                    `  <button type="button" class="btn btn-success" onclick="closeDialogs();${confirmationFunction}">Sim</button>`,
-                    `  <button type="button" class="btn btn-danger" onclick="closeDialogs();">Não</button>`,
-                    '</div>'
-                ].join('')
-
-                document.getElementById('liveDialogPlaceholder').append(wrapper)
-
-                setTimeout(function () {
-                    closeDialogs();
-                }, timeout);
-            }
 
             // -- CRUD API 
             function save() {
