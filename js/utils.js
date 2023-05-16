@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:8080";
+
 const MSG_READY_TO_EDIT = "Altere os campos do formulário e em seguida salve suas alterações.";
 const TIMEOUT_MSG_DANGER = 4500;
 const TIMEOUT_MSG_SUCCESS = 3000;
