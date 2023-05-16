@@ -3,6 +3,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
         <title>Cadastro de Itens </title>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="./js/auth-utils.js"></script>
         <script type="text/javascript" src="./js/table-utils.js"></script>
         <script type="text/javascript" src="./js/mesas-tables.js"></script>
         <script type="text/javascript" src="./js/utils.js"></script>
@@ -25,7 +26,8 @@
                 axios.patch(ENDPOINT, {
                         tableNumber,
                         complement
-                    })
+                    },
+                    getAuthorizationHeader())
                     .then(function (response) {
                         console.log(response);
                         alertMessage(MSG_TYPE_SUCCESS, MSG_SUCCESS_SAVE, TIMEOUT_MSG_SUCCESS);
@@ -42,7 +44,7 @@
             }
 
             function deleteMesa(tableNumber) {
-                axios.delete(`${ENDPOINT}/${tableNumber}`)
+                axios.delete(`${ENDPOINT}/${tableNumber}`, getAuthorizationHeader())
                     .then(function (response) {
                         console.dir(response);
                         alertMessage(MSG_TYPE_DANGER, MSG_SUCCESS_DELETE, TIMEOUT_MSG_DANGER);
@@ -59,7 +61,7 @@
             function getMesas() {
                 cleanTable();
 
-                axios.get(ENDPOINT)
+                axios.get(ENDPOINT, getAuthorizationHeader())
                     .then(function (response) {
                         var menuItems = response.data;
                         menuItems.sort((a, b) => a.table_number - b.table_number); // Ordenando pelo ID.
