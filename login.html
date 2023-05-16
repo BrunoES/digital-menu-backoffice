@@ -4,8 +4,11 @@
         <title>Cardapil - Entrar</title>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="./js/auth-utils.js"></script>
+        <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
-            const ENDPOINT = 'http://localhost:8080/login';
+            const ENDPOINT = `${BASE_URL}/login`;
+
+            const MSG_INVALID_CREDENTIALS = "E-mail ou senha inválidos";
 
             window.onload = function() {
               var input = document.getElementById('password');
@@ -17,8 +20,21 @@
             }
 
             function login() {
-              setToken("abcdefg");
-              window.location.href= "./menu.html";
+              var user = document.getElementById('email').value;
+              var password = document.getElementById('password').value;
+              
+              axios.post(ENDPOINT, {
+                    user,
+                    password
+                })
+                .then(function (response) {
+                    console.dir(response);
+                    setToken(response.data.access_token);
+                    window.location.href= "./menu.html";
+                })
+                .catch(function (error) {
+                    alertMessage(MSG_INVALID_CREDENTIALS, MSG_TYPE_DANGER, TIMEOUT_MSG_DANGER);
+                });
             }
         </script>
     </head>
@@ -65,6 +81,11 @@
                               <button class="btn btn-success btn-lg btn-block" type="button" onclick="login()">Login</button>
                             </div>
           
+                            <div id="liveAlertPlaceholder" class="fixed-bottom">
+                            </div>
+                            <div id="liveDialogPlaceholder" class="fixed-bottom">
+                            </div>
+
                             <a class="small text-muted" href="./esqueci-minha-senha.html">Esqueceu a senha?</a>
                             <p class="mb-5 pb-lg-2" style="color: #393f81;">Se cadastrar? <a href="#!"
                                 style="color: #393f81;">Registre-se aqui</a></p>
