@@ -225,7 +225,7 @@
                 document.getElementById('name').value = name;
                 document.getElementById('description').value = description;
                 document.getElementById('price').value = price;
-                document.getElementById('productImage').src = `data:image/png;base64,${base64Imgs[id]}`;
+                document.getElementById('productImage').src = base64Imgs[id];
                 document.getElementById('name').focus();
             }
 

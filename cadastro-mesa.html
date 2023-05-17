@@ -67,7 +67,8 @@
                         var menuItems = response.data;
                         menuItems.sort((a, b) => a.table_number - b.table_number); // Ordenando pelo ID.
                         menuItems.forEach(element => {
-                            insertMesasTable(element.table_number, element.complement);
+                            const mesa = element.mesa;
+                            insertMesasTable(mesa.table_number, mesa.complement, element.base64QRCode);
                         });
                     })
                     .catch(function (error) {
@@ -99,6 +100,21 @@
                 for (var i = tableHeaderRowCount; i < rowCount; i++) {
                     table.deleteRow(tableHeaderRowCount);
                 }
+            }
+
+            function ImagetoPrint(source) {
+                return "<html><head><scri"+"pt>function step1(){\n" +
+                        "setTimeout('step2()', 10);}\n" +
+                        "function step2(){window.print();window.close()}\n" +
+                        "</scri" + "pt></head><body onload='step1()'>\n" +
+                        "<img src='" + source + "' /></body></html>";
+            }
+
+            function printQRCodeMesa(base64QRCode) {
+              popup = window.open();
+              popup.document.write(ImagetoPrint(base64QRCode));
+              popup.focus(); //required for IE
+              popup.print();
             }
             
         </script>

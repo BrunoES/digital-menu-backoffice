@@ -1,5 +1,6 @@
 const GREEN = '#118c05';
 const RED = '#Ea2d30';
+const LIGHT_BLUE_WHIT = '#9BBCC1';
 
 function createRow() {
     var row=document.createElement("tr");
