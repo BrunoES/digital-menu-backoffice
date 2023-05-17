@@ -1,6 +1,7 @@
 const TOKEN_NAME = "digital-menu-token";
 
 function setToken(token) {
+    disableToken();
     window.localStorage.setItem(TOKEN_NAME, token);
 }
 
@@ -11,6 +12,11 @@ function retrieveToken() {
 
 function disableToken() {
     window.localStorage.removeItem(TOKEN_NAME);
+}
+
+function signOut() {
+    disableToken();
+    window.location.href= "./login.html";
 }
 
 function getAuthorizationHeader() {

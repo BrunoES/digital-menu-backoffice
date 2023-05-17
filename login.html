@@ -19,10 +19,27 @@
               });
             }
 
+            function init() {
+              isAuthenticated();
+            }
+
+            function isAuthenticated() {
+              axios.get(`${BASE_URL}/mock-endpoint`, getAuthorizationHeader())
+                .then(function (response) {
+                    window.location.href= "./menu.html";
+                })
+                .catch(function (error) {
+                    console.log("User not authenticated");
+                });
+            }
+
             function login() {
               var user = document.getElementById('email').value;
               var password = document.getElementById('password').value;
               
+              console.log(user)
+              console.log(password)
+
               axios.post(ENDPOINT, {
                     user,
                     password
@@ -33,12 +50,12 @@
                     window.location.href= "./menu.html";
                 })
                 .catch(function (error) {
-                    alertMessage(MSG_INVALID_CREDENTIALS, MSG_TYPE_DANGER, TIMEOUT_MSG_DANGER);
+                    alertMessage(MSG_TYPE_DANGER, MSG_INVALID_CREDENTIALS, TIMEOUT_MSG_DANGER);
                 });
             }
         </script>
     </head>
-    <body">
+    <body onload="init()">
         <section class="vh-100" style="background-color: coral;">
             <div class="container py-5 h-100">
               <div class="row d-flex justify-content-center align-items-center h-100">
