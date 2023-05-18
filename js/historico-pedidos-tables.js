@@ -1,5 +1,5 @@
 function insertPedido(checkoutId, dateHour, customerName, total) {
-    tabBody=document.getElementById("mesas_table");
+    tabBody=document.getElementById("historico_pedidos_table");
     var row= createRow();
 
     var columnCheckoutId = createTextColumn(checkoutId);
