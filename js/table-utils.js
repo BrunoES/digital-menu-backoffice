@@ -1,6 +1,6 @@
 const GREEN = '#118c05';
 const RED = '#Ea2d30';
-const LIGHT_BLUE_WHIT = '#9BBCC1';
+const LIGHT_BLUE_WHITE = '#9BBCC1';
 
 function createRow() {
     var row=document.createElement("tr");
@@ -24,4 +24,13 @@ function createHTMLButton(name, onClick, backgroundColor) {
     button.appendChild(node);
     cell.appendChild(button);
     return cell;
+}
+
+function cleanTableUtils(tableName) {
+    var tableHeaderRowCount = 1;
+    var table = document.getElementById(tableName);
+    var rowCount = table.rows.length;
+    for (var i = tableHeaderRowCount; i < rowCount; i++) {
+        table.deleteRow(tableHeaderRowCount);
+    }
 }

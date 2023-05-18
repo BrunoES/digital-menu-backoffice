@@ -8,7 +8,7 @@ function insertMesasTable(tableNumber, complement, base64QRCode) {
     var columnComplement = createTextColumn(complement);
     row.appendChild(columnComplement);
 
-    var buttonPrintQRCodeMesa = createHTMLButton("Imprimir QR Code", `printQRCodeMesa('${base64QRCode}')`, LIGHT_BLUE_WHIT);
+    var buttonPrintQRCodeMesa = createHTMLButton("Imprimir QR Code", `printQRCodeMesa('${base64QRCode}')`, LIGHT_BLUE_WHITE);
     row.appendChild(buttonPrintQRCodeMesa);
 
     var deleteButton = createHTMLButton("Excluir", `onClickDelete('${tableNumber}')`, RED);

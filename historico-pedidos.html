@@ -1,0 +1,152 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <title>Hist&#243;rico de Pedidos</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="./js/auth-utils.js"></script>
+        <script type="text/javascript" src="./js/table-utils.js"></script>
+        <script type="text/javascript" src="./js/historico-pedidos-tables.js"></script>
+        <script type="text/javascript" src="./js/utils.js"></script>
+        <script type="text/javascript">
+            const ENDPOINT = `${BASE_URL}/pedidos`;
+
+            function init() {
+              getPedidos();
+            }
+
+            function getPedidos() {
+                cleanTable();
+
+                axios.get(ENDPOINT, getAuthorizationHeader())
+                    .then(function (response) {
+                        console.dir(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .finally(function () {
+                    });
+            }
+
+            function openDetails(checkoutId) {
+
+            }
+
+            function cleanForm() {
+                document.getElementById('initialDate').value = "";
+                document.getElementById('finalDate').value = "";
+                document.getElementById('initialDate').focus();
+            }
+
+            function cleanTable() {
+              cleanTableUtils("historico_pedidos_table");
+            }
+            
+        </script>
+    </head>
+    <body onload="init()">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff6219;">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+          <!-- Toggle button -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Collapsible wrapper -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-lg-0" href="./menu.html">
+              <img
+                src="./imgs/logo.JPG"
+                height="50"
+                alt="MDB Logo"
+                loading="lazy"
+              />
+            </a>
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item m-2">
+                <a class="nav-link" style="color: white" href="#">Painel de Pedidos</a>
+              </li>
+              <li class="nav-item m-2">
+                <a class="nav-link" style="color: white" href="./historico-pedidos.html">Hist&#243;rico de Pedidos</a>
+              </li>
+              <li class="nav-item m-2">
+                <a class="nav-link lg-4" style="color: white" href="./cadastro-menu-item.html">Produtos</a>
+              </li>
+              <li class="nav-item m-2">
+                <a class="nav-link" style="color: white" href="./cadastro-mesa.html">Mesas</a>
+              </li>
+              <li class="nav-item m-2">
+                <a class="nav-link" style="color: white" href="#">Minha conta</a>
+              </li>
+            </ul>
+            <!-- Left links -->
+          </div>
+          <!-- Collapsible wrapper -->
+
+          <!-- Right elements -->
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-light" onclick="signOut()">
+              <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+            </button>
+          </div>
+          <!-- Right elements -->
+        </div>
+        <!-- Container wrapper -->
+      </nav>
+      <!-- Navbar -->
+        <div class="form-group m-4">
+            <h2>Hist&#243;rico de Pedidos</h2>
+            <p>
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm">
+                    <input type="text" class="form-control m-2" id="initialDate" placeholder="de Data Inicial" maxlength="10"/>
+                  </div>
+                  <div class="col-sm">
+                    <input type="text" class="form-control m-2" id="finalDate" placeholder="até Data Final" maxlength="10"/>
+                  </div>
+                </div>
+              </div>
+            </p>
+            <div class="m-1">
+                <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidos();">Hoje</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidos();">Últimos 7 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidos();">Últimos 30 dias</button>
+            </div>
+            <div id="liveAlertPlaceholder" class="fixed-bottom">
+            </div>
+            <div id="liveDialogPlaceholder" class="fixed-bottom">
+            </div>
+            <br/>
+            <div class="overflow-auto h-50">
+                <table class="table m-2" id="historico_pedidos_table">
+                    <thead>
+                        <tr>
+                        <th scope="col">n° Pedido</th>
+                        <th scope="col">Data/Hora</th>
+                        <th scope="col">Nome do Cliente</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
