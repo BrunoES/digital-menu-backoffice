@@ -107,14 +107,18 @@
                         "setTimeout('step2()', 10);}\n" +
                         "function step2(){window.print();window.close()}\n" +
                         "</scri" + "pt></head><body onload='step1()'>\n" +
-                        "<img src='" + source + "' /></body></html>";
+                        "<center><img src='" + source + "' height='450px' width='450px'/></center></body></html>";
             }
 
             function printQRCodeMesa(base64QRCode) {
-              popup = window.open();
+              console.log(base64QRCode)
+              popup = window.open(``, `Imprimir QRCode`, `height=500,width=500"`);
               popup.document.write(ImagetoPrint(base64QRCode));
               popup.focus(); //required for IE
-              popup.print();
+              // delay para que de tempo de carregar a imagem, antes de chamar a impressao.
+              setTimeout(function () {
+                popup.print();
+              }, 1000);
             }
             
         </script>
