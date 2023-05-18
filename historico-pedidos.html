@@ -91,7 +91,7 @@
                       var pedidos = response.data;
                       console.dir(pedidos)
                       pedidos.forEach(pedido => {
-                        insertPedido(pedido.id, pedido.date_hour, pedido.id_customer, pedido.total);
+                        insertPedido(pedido.id_pedido, pedido.date_hour_formatted, pedido.customer_name, pedido.total);
                       });
                   })
                   .catch(function (error) {
