@@ -4,14 +4,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Cardapil - Recupera&ccedil;&atilde;o de Senha</title>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript" src="./js/auth-utils.js"></script>
         <script type="text/javascript">
+          
           function init() {
             console.log(retrieveToken());
-          }          
+            isAuthenticatedInternalPages();
+          }
         </script>
     </head>
-    <body onload="init()">
+    <body onload="init();">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff6219;">
         <!-- Container wrapper -->

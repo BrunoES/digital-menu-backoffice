@@ -10,17 +10,22 @@
 
             const MSG_INVALID_CREDENTIALS = "E-mail ou senha inválidos";
 
-            window.onload = function() {
-              var input = document.getElementById('password');
-              input.addEventListener("keydown", function (e) {
+            function init() {
+              isAuthenticated();
+              
+              var inputPassword = document.getElementById('password');
+              inputPassword.addEventListener("keydown", function (e) {
                   if (e.code === "Enter") {  //checks whether the pressed key is "Enter"
                       login();
                   }
               });
-            }
 
-            function init() {
-              isAuthenticated();
+              var inputEmail = document.getElementById('email');
+              inputEmail.addEventListener("keydown", function (e) {
+                  if (e.code === "Enter") {  //checks whether the pressed key is "Enter"
+                      document.getElementById('password').focus();
+                  }
+              });
             }
 
             function isAuthenticated() {

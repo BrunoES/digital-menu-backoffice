@@ -6,7 +6,8 @@ function setToken(token) {
 }
 
 function retrieveToken() {
-    const token = window.localStorage.getItem(TOKEN_NAME);
+    var token = window.localStorage.getItem(TOKEN_NAME);
+    if (token == null) token = "";
     return token;
 }
 
@@ -27,4 +28,21 @@ function getAuthorizationHeader() {
       };
 
     return headers;
+}
+
+function isAuthenticatedInternalPages() {
+    console.log("entrou");
+
+    console.log(`${BASE_URL}/mock-endpoint`);
+    console.log(getAuthorizationHeader());
+
+    axios.get(`${BASE_URL}/mock-endpoint`, getAuthorizationHeader())
+        .then(function (response) {
+            console.log("User authenticated");
+        })
+        .catch(function (error) {
+            console.log("User not authenticated");
+            window.location.href= "./login.html";
+        });
+        console.log("saiu");
 }
