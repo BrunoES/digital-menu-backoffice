@@ -33,7 +33,23 @@
             }
 
             function getCurrentDate() {
-              return new Date().toJSON().slice(0, 10);
+              return new Date().toJSON().slice(0, 10).replaceAll('/', '-');;
+            }
+
+            function getFormattedCurrentDate() {
+              return new Date().toLocaleDateString("pt-BR");
+            }
+
+            function getCurrentDateMinus(numberOfDays) {
+              var today = new Date();
+              var priorDate = new Date(new Date().setDate(today.getDate() - numberOfDays));
+              return priorDate.toJSON().slice(0, 10);
+            }
+
+            function getFormattedCurrentDateMinus(numberOfDays) {
+              var today = new Date();
+              var priorDate = new Date(new Date().setDate(today.getDate() - numberOfDays));
+              return priorDate.toLocaleDateString("pt-BR");
             }
 
             $(function() {
@@ -82,6 +98,19 @@
               });
             });
 
+            function getPedidosUltimosNDias(numberOfDays) {
+              initialDateApi = getCurrentDateMinus(numberOfDays);
+              finalDateApi = getCurrentDate();
+
+              document.getElementById('initialDate').value = getFormattedCurrentDateMinus(numberOfDays);
+              document.getElementById('finalDate').value = getFormattedCurrentDate();
+
+              console.log(initialDateApi);
+              console.log(finalDateApi);
+              
+              getPedidos();
+            }
+            
             function getPedidos() {
               initialDateApi = initialDateApi.replaceAll('/', '-');
               finalDateApi = finalDateApi.replaceAll('/', '-');
@@ -214,9 +243,11 @@
 
             <div class="m-1">
                 <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidos();">Hoje</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidos();">Últimos 7 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidos();">Últimos 30 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(0);">Hoje</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(7);">Últimos 7 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(30);">Últimos 30 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(90);">Últimos 90 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(180);">Últimos 6 meses</button>
             </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
