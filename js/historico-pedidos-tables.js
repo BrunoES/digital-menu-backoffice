@@ -14,8 +14,14 @@ function insertPedido(checkoutId, dateHour, customerName, total) {
     var columnTotal = createTextColumn(total);
     row.appendChild(columnTotal);
 
-    var openDetailsButton = createHTMLButton("Detalhes", `openDetails('${checkoutId}')`, LIGHT_BLUE_WHITE);
-    row.appendChild(openDetailsButton);
+    // Botao que abre modal com detalhes do pedido, chama API de detalhes do pedido
+    var cell = document.createElement("td");
+    cell.innerHTML = `<button type="button" class="btn btn-primary" style='background-color: ${LIGHT_BLUE_WHITE}; color: white; border-radius: 10px' data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getPedidoById('${checkoutId}')">
+                        Detalhes
+                      </button>`;
+
+    row.appendChild(cell);
 
     tabBody.appendChild(row);
 }
+
