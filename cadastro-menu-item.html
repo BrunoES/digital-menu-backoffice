@@ -26,20 +26,6 @@
                 getProdutos();
             }
 
-            // -- Formatting
-            const formatter = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            });
-
-            function formatPrice(price) {
-                return "R$ " + parseFloat(price).toFixed(2).replace(".", ",");
-            }
-
-            function cleanPrice(price) {
-                return price.replace("R$ ", "").replace(",", ".");
-            }
-
             var loadPreview = function(event) {
                 var output = document.getElementById('productImage');
                 output.src = URL.createObjectURL(event.target.files[0]);

@@ -30,6 +30,16 @@ function getAuthorizationHeader() {
     return headers;
 }
 
+function isAuthenticatedExternalPages() {
+    axios.get(`${BASE_URL}/mock-endpoint`, getAuthorizationHeader())
+      .then(function (response) {
+          window.location.href= "./menu.html";
+      })
+      .catch(function (error) {
+          console.log("User not authenticated");
+      });
+  }
+
 function isAuthenticatedInternalPages() {
     console.log("entrou");
 

@@ -1,6 +1,7 @@
 const BASE_URL = "http://localhost:8080";
 
 const MSG_READY_TO_EDIT = "Altere os campos do formulário e em seguida salve suas alterações.";
+const MSG_FIELD_EMAIL_ERROR = "E-mail inválido, confira.";
 const TIMEOUT_MSG_DANGER = 4500;
 const TIMEOUT_MSG_SUCCESS = 3000;
 const TIMEOUT_MSG_DIALOG = 10000;
@@ -57,4 +58,28 @@ function confirmDialog(type, message, timeout, confirmationFunction) {
     setTimeout(function () {
         closeDialogs();
     }, timeout);
+}
+
+// -- Formatting
+const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+});
+
+const validateEmail = (email) => {
+    var isValid = email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+
+    if (!isValid) alertMessage(MSG_TYPE_DANGER, MSG_FIELD_EMAIL_ERROR, TIMEOUT_MSG_DANGER);
+
+    return isValid;
+};
+
+function formatPrice(price) {
+    return "R$ " + parseFloat(price).toFixed(2).replace(".", ",");
+}
+
+function cleanPrice(price) {
+    return price.replace("R$ ", "").replace(",", ".");
 }

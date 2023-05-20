@@ -107,7 +107,7 @@
 
               console.log(initialDateApi);
               console.log(finalDateApi);
-              
+
               getPedidos();
             }
             
@@ -125,7 +125,7 @@
                       var pedidos = response.data;
                       console.dir(pedidos)
                       pedidos.forEach(pedido => {
-                        insertPedido(pedido.id_pedido, pedido.date_hour_formatted, pedido.customer_name, pedido.total);
+                        insertPedido(pedido.id_pedido, pedido.date_hour_formatted, pedido.customer_name, formatPrice(pedido.total));
                       });
                   })
                   .catch(function (error) {
@@ -146,7 +146,7 @@
                       var itensPedido = response.data;
                       console.dir(itensPedido);
                       itensPedido.forEach(item => {
-                        insertItemPedido(item.id_menu, item.name, item.quantity, item.price, (item.quantity * item.price));
+                        insertItemPedido(item.id_menu, item.name, item.quantity, formatPrice(item.price), formatPrice(item.quantity * item.price));
                       });
                   })
                   .catch(function (error) {
