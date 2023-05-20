@@ -11,7 +11,9 @@
             const MSG_INVALID_CREDENTIALS = "E-mail ou senha inválidos";
             const MSG_FORM_CADASTRO_ERROR = "Preencha todos os campos.";
             const MSG_FIELD_PASSWORD_ERROR = "As senhas não conferem.";
+            const MSG_SIGNUP_ERRO = "Ocorreu um problema ao realizar seu cadastro, tente novamente mais tarde.";
             const MSG_FIELD_PASSWORD_INVALID = "A senha deve conter entre 8 e 12 characteres, pelo menos um número, e um caracter especial.";
+            const MSG_EMAIL_CONFIRMATION_SENDED = "Enviado um link de confirmação para seu e-mail. Acesse-o para ativar e acessar sua conta."
 
             function init() {
               isAuthenticatedExternalPages();
@@ -22,6 +24,11 @@
                     save();
                   }
               });
+            }
+
+            function cleanForm() {
+              document.getElementById('password').value = '';
+              document.getElementById('passwordConfirmation').value = '';
             }
             
             function validaEmail(user) {
@@ -81,19 +88,19 @@
                 return;
               }
                 
-              /*
               axios.post(ENDPOINT, {
+                    name,
                     user,
                     password
                 })
                 .then(function (response) {
                     console.dir(response);
-                    setToken(response.data.access_token);
-                    window.location.href= "./menu.html";
+                    alertMessage(MSG_TYPE_SUCCESS, MSG_EMAIL_CONFIRMATION_SENDED, 60000);
                 })
                 .catch(function (error) {
-                    alertMessage(MSG_TYPE_DANGER, MSG_FORM_CADASTRO_ERROR, TIMEOUT_MSG_DANGER);
-                });*/
+                    alertMessage(MSG_TYPE_DANGER, MSG_SIGNUP_ERRO, TIMEOUT_MSG_DANGER);
+                });
+                cleanForm();
             }
         </script>
     </head>
