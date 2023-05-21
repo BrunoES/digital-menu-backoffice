@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:8080";
 
-const MSG_READY_TO_EDIT = "Altere os campos do formulário e em seguida salve suas alterações.";
-const MSG_FIELD_EMAIL_ERROR = "E-mail inválido, confira.";
+const MSG_READY_TO_EDIT = "Altere os campos do formul&aacute;rio e em seguida salve suas altera&ccedil;ões.";
+const MSG_FIELD_EMAIL_ERROR = "E-mail inv&aacute;lido, confira.";
 const TIMEOUT_MSG_DANGER = 4500;
 const TIMEOUT_MSG_SUCCESS = 3000;
 const TIMEOUT_MSG_DIALOG = 10000;
@@ -49,7 +49,7 @@ function confirmDialog(type, message, timeout, confirmationFunction) {
         `<div class="alert alert-${type} alert-dismissible" role="alert">`,
         `<span class="fs-5">${message}</span>  `,
         `  <button type="button" class="btn btn-success" onclick="closeDialogs();${confirmationFunction}">Sim</button>`,
-        `  <button type="button" class="btn btn-danger" onclick="closeDialogs();">Não</button>`,
+        `  <button type="button" class="btn btn-danger" onclick="closeDialogs();">N&atilde;o</button>`,
         '</div>'
     ].join('')
 

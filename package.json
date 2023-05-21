@@ -1,0 +1,19 @@
+{
+  "name": "digital-menu-backoffice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrunoES/digital-menu-backoffice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrunoES/digital-menu-backoffice/issues"
+  },
+  "homepage": "https://github.com/BrunoES/digital-menu-backoffice#readme"
+}

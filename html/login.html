@@ -8,7 +8,7 @@
         <script type="text/javascript">
             const ENDPOINT = `${BASE_URL}/login`;
 
-            const MSG_INVALID_CREDENTIALS = "E-mail ou senha inválidos";
+            const MSG_INVALID_CREDENTIALS = "E-mail ou senha inv&aacute;lidos";
 
             function init() {
               isAuthenticatedExternalPages();
@@ -42,7 +42,7 @@
                 .then(function (response) {
                     console.dir(response);
                     setToken(response.data.access_token);
-                    window.location.href= "./menu.html";
+                    window.location.href= "/menu";
                 })
                 .catch(function (error) {
                     alertMessage(MSG_TYPE_DANGER, MSG_INVALID_CREDENTIALS, TIMEOUT_MSG_DANGER);
@@ -98,8 +98,8 @@
                             <div id="liveDialogPlaceholder" class="fixed-bottom">
                             </div>
 
-                            <a class="small text-muted" href="./esqueci-minha-senha.html">Esqueceu a senha?</a>
-                            <p class="mb-5 pb-lg-2" style="color: #393f81;">Se cadastrar? <a href="./cadastro.html"
+                            <a class="small text-muted" href="/esqueci-minha-senha">Esqueceu a senha?</a>
+                            <p class="mb-5 pb-lg-2" style="color: #393f81;">Se cadastrar? <a href="/cadastro"
                                 style="color: #393f81;">Registre-se aqui</a></p>
                             <a href="#!" class="small text-muted">Termos de uso.</a>
                             <a href="#!" class="small text-muted">Politica de privacidade</a>

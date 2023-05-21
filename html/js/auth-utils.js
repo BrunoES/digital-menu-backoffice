@@ -17,7 +17,7 @@ function disableToken() {
 
 function signOut() {
     disableToken();
-    window.location.href= "./login.html";
+    window.location.href= "/login";
 }
 
 function getAuthorizationHeader() {
@@ -33,7 +33,7 @@ function getAuthorizationHeader() {
 function isAuthenticatedExternalPages() {
     axios.get(`${BASE_URL}/mock-endpoint`, getAuthorizationHeader())
       .then(function (response) {
-          window.location.href= "./menu.html";
+          window.location.href= "/menu";
       })
       .catch(function (error) {
           console.log("User not authenticated");
@@ -52,7 +52,7 @@ function isAuthenticatedInternalPages() {
         })
         .catch(function (error) {
             console.log("User not authenticated");
-            window.location.href= "./login.html";
+            window.location.href= "/login";
         });
         console.log("saiu");
 }

@@ -73,7 +73,7 @@
                   monthNames: [
                       "Janeiro",
                       "Fevereiro",
-                      "Março",
+                      "Mar&ccedil;o",
                       "Abril",
                       "Maio",
                       "Junho",
@@ -189,7 +189,7 @@
           <!-- Collapsible wrapper -->
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Navbar brand -->
-            <a class="navbar-brand mt-2 mt-lg-0" href="./menu.html">
+            <a class="navbar-brand mt-2 mt-lg-0" href="/menu">
               <img
                 src="./imgs/logo.JPG"
                 height="50"
@@ -203,13 +203,13 @@
                 <a class="nav-link" style="color: white" href="#">Painel de Pedidos</a>
               </li>
               <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="./historico-pedidos.html">Hist&#243;rico de Pedidos</a>
+                <a class="nav-link" style="color: white" href="/historico-pedidos">Hist&#243;rico de Pedidos</a>
               </li>
               <li class="nav-item m-2">
-                <a class="nav-link lg-4" style="color: white" href="./cadastro-menu-item.html">Produtos</a>
+                <a class="nav-link lg-4" style="color: white" href="/cadastro-menu-item">Produtos</a>
               </li>
               <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="./cadastro-mesa.html">Mesas</a>
+                <a class="nav-link" style="color: white" href="/cadastro-mesa">Mesas</a>
               </li>
               <li class="nav-item m-2">
                 <a class="nav-link" style="color: white" href="#">Minha conta</a>
@@ -244,10 +244,10 @@
             <div class="m-1">
                 <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(0);">Hoje</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(7);">Últimos 7 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(30);">Últimos 30 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(90);">Últimos 90 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(180);">Últimos 6 meses</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(7);">&Uacute;ltimos 7 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(30);">&Uacute;ltimos 30 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(90);">&Uacute;ltimos 90 dias</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(180);">&Uacute;ltimos 6 meses</button>
             </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
@@ -273,7 +273,7 @@
                               <th scope="col">ID Produto</th>
                               <th scope="col">Nome Produto</th>
                               <th scope="col">Quantidade</th>
-                              <th scope="col">Preço R$</th>
+                              <th scope="col">Pre&ccedil;o R$</th>
                               <th scope="col">Sub Total</th>
                               </tr>
                           </thead>
@@ -294,7 +294,7 @@
                 <table class="table m-2" id="historico_pedidos_table">
                     <thead>
                         <tr>
-                        <th scope="col">n° Pedido</th>
+                        <th scope="col">n&deg; Pedido</th>
                         <th scope="col">Data/Hora</th>
                         <th scope="col">Nome do Cliente</th>
                         <th scope="col">Total</th>

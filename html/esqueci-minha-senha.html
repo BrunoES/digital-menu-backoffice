@@ -6,7 +6,7 @@
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
             const ENDPOINT = `${BASE_URL}/request-change-password`;
-            const MSG_EMAIL_CONFIRMATION_SENDED = "Caso seja um e-mail valido, foi enviado um link de redefinição de senha para seu e-mail. Acesse-o para redefini-la."
+            const MSG_EMAIL_CONFIRMATION_SENDED = "Caso seja um e-mail valido, foi enviado um link de redefini&ccedil;&atilde;o de senha para seu e-mail. Acesse-o para redefini-la."
 
             function sendChangePasswordMail() {
               var user = document.getElementById('email').value;
@@ -61,7 +61,7 @@
                               <label class="form-label" for="email">E-mail de sua conta</label>
                               <input type="email" id="email" class="form-control form-control-lg" placeholder="E-mail"/ onblur="validateEmail(this.value)">
                               <p class="mt-3">
-                                Será enviado um link para redefinir sua senha para o seu endereço de e-mail.
+                                Ser&aacute; enviado um link para redefinir sua senha para o seu endere&ccedil;o de e-mail.
                               </p>
                             </div>
                             
@@ -74,7 +74,7 @@
                             </div>
         
                             <p class="mb-5 pb-lg-2" style="color: #393f81;">Se cadastrar? 
-                            <a href="#!"style="color: #393f81;">Registre-se aqui</a></p>
+                            <a href="/cadastro" style="color: #393f81;">Registre-se aqui</a></p>
                           </form>  
                         </div>
                       </div>
