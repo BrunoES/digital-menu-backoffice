@@ -145,9 +145,20 @@ console.log("Running");
 
 //create a server object:
 http.createServer(function (req, res) {
+  var data = req.url.split("?");
+  var url = data[0];
+
+  // Le parametro recebido de possivel direcionamento, e coloca em forma de header na response para o frontend.
+  if(data.length > 1) {
+    var parameter = data[1];
+    var headerName = parameter.split("=")[0];
+    var headerValue = parameter.split("=")[1];
+    res.setHeader(headerName, headerValue);
+  }
+
   res.setHeader("Content-Type", "text/html");
   console.log(req.url)
-  switch (req.url) {
+  switch (url) {
     case "/imgs/logo.JPG":
         res.setHeader("Content-Type", "image/jpeg");
         res.writeHead(200);
@@ -223,4 +234,4 @@ http.createServer(function (req, res) {
       res.end("Resource not found.");
 }
 
-}).listen(9091); //the server object listens on port 8080
+}).listen(9091);
