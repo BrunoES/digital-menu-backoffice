@@ -19,6 +19,7 @@ var htmlCadastroMesa = '';
 var htmlCadastroMenuItem = '';
 var htmlMinhaConta = '';
 var htmlUserActivaded = '';
+var htmlPainel = '';
 
 var imgLogo = fs.readFileSync('./html/imgs/logo.JPG');
 var imgLogoBranco = fs.readFileSync('./html/imgs/logo-branco.JPG');
@@ -101,6 +102,14 @@ fs.readFile('./html/user-activated.html', 'utf8', (err, data) => {
       return;
   }
   htmlUserActivaded = data;
+});
+
+fs.readFile('./html/painel.html', 'utf8', (err, data) => {
+  if (err) {
+      console.error(err);
+      return;
+  }
+  htmlPainel = data;
 });
 
 fs.readFile('./html/js/utils.js', 'utf8', (err, data) => {
@@ -218,6 +227,10 @@ http.createServer(function (req, res) {
     case "/user-activated":
         res.writeHead(200);
         res.end(htmlUserActivaded);
+        break
+    case "/painel":
+        res.writeHead(200);
+        res.end(htmlPainel);
         break
     case "/menu":
         res.writeHead(200);

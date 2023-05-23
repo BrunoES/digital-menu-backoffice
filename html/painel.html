@@ -12,7 +12,7 @@
         <!-- Modal -->
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         
-        <title>Hist&#243;rico de Pedidos</title>
+        <title>Painel de Pedidos</title>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="./js/auth-utils.js"></script>
         <script type="text/javascript" src="./js/table-utils.js"></script>
@@ -20,7 +20,7 @@
         <script type="text/javascript" src="./js/itens-pedido-tables.js"></script>
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
-            const ENDPOINT = `${BASE_URL}/pedidos`;
+            const ENDPOINT = `${BASE_URL}/pedidos-full`;
             const DATE_FORMAT_PT_BR = 'DD/MM/YYYY';
             const DATE_FORMAT_EN = 'YYYY/MM/DD';
 
@@ -29,7 +29,8 @@
             
             function init() {
               isAuthenticatedInternalPages();
-              getPedidos();
+              //getPedidos();
+              getPedidosUltimasNHoras(30);
             }
 
             function getCurrentDate() {
@@ -98,12 +99,9 @@
               });
             });
 
-            function getPedidosUltimosNDias(numberOfDays) {
+            function getPedidosUltimasNHoras(numberOfDays) {
               initialDateApi = getCurrentDateMinus(numberOfDays);
               finalDateApi = getCurrentDate();
-
-              document.getElementById('initialDate').value = getFormattedCurrentDateMinus(numberOfDays);
-              document.getElementById('finalDate').value = getFormattedCurrentDate();
 
               console.log(initialDateApi);
               console.log(finalDateApi);
@@ -111,21 +109,66 @@
               getPedidos();
             }
             
+            function buildCheckoutHtml(items) {
+              var htmlItems = "";
+
+              items.forEach(item => {
+                htmlItems = htmlItems + `
+                <br></br>
+                <p>
+                  ${item.id_menu}
+                  ${item.name}
+                  ${item.quantity}
+                  ${formatPrice(item.price)}
+                  ${formatPrice(item.quantity * item.price)}
+                </p>
+                `;
+              });
+
+              return htmlItems;
+            }
+
+            function buildItemsHtml(data) {
+              var pedido = data.pedido;
+              var items = data.detalheItems;
+              var htmlItems = buildCheckoutHtml(items);
+
+              var oldContent = document.getElementById('container').innerHTML;
+              var checkoutHtml = `
+              <div class="card">
+                <div class="card-body">
+                  <div class="row g-0">
+                    <div class="col-md-6 col-lg-5 d-none d-md-block">
+                      <h5 class="modal-title">#Pedido: ${pedido.id_pedido}</h5>
+                      <p>${pedido.date_hour_formatted}</p>
+                      <p>Cliente: ${pedido.customer_name}</p>
+                      <p>Total: ${formatPrice(pedido.total)}</p>
+                      <label for="observacao">Observa&ccedil;&atilde;o:</label>
+                      <textarea class="form-control m-2" id="observacao" maxlength="255" placeholder="Observa&ccedil;&atilde;o">${pedido.obs}</textarea>
+                    </div>    
+                    <div class="col-md-6 col-lg-7 d-flex">
+                      ${htmlItems}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              `;
+              document.getElementById('container').innerHTML = oldContent + checkoutHtml;
+            }
+
             function getPedidos() {
               initialDateApi = initialDateApi.replaceAll('/', '-');
               finalDateApi = finalDateApi.replaceAll('/', '-');
               
-              cleanTable();
-
               console.log(`${ENDPOINT}/${initialDateApi}/${finalDateApi}`);
 
               axios.get(`${ENDPOINT}/${initialDateApi}/${finalDateApi}`, getAuthorizationHeader())
                   .then(function (response) {
                       console.dir(response);
                       var pedidos = response.data;
-                      console.dir(pedidos)
-                      pedidos.forEach(pedido => {
-                        insertPedido(pedido.id_pedido, pedido.date_hour_formatted, pedido.customer_name, formatPrice(pedido.total));
+                      pedidos.forEach(data => {
+                        console.log(data);
+                        buildItemsHtml(data);
                       });
                   })
                   .catch(function (error) {
@@ -158,14 +201,7 @@
             }
 
             function cleanForm() {
-                document.getElementById('initialDate').value = "";
-                document.getElementById('finalDate').value = "";
-                document.getElementById('initialDate').focus();
-            }
 
-            function cleanTable() {
-              cleanTableUtils("historico_pedidos_table");
-              document.getElementById('observacao').value = "";
             }
 
         </script>
@@ -233,23 +269,14 @@
       </nav>
       <!-- Navbar -->
         <div class="form-group form-inline m-4">
-            <h2>Hist&#243;rico de Pedidos</h2>
-            
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-            <label for="initialDate">Data Inicial</label>
-            <input type="text" class="form-control" id="initialDate" name="initialDate" placeholder="de Data Inicial" readonly/>
-            
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-            <label for="finalDate">Data Final</label>
-            <input type="text" class="form-control" id="finalDate" name="finalDate" placeholder="até Data Final" readonly>
+            <h2>Pedidos em tempo real</h2>
 
             <div class="m-1">
-                <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(0);">Hoje</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(7);">&Uacute;ltimos 7 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(30);">&Uacute;ltimos 30 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(90);">&Uacute;ltimos 90 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(180);">&Uacute;ltimos 6 meses</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1);">&Uacute;ltima hora</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(2);">&Uacute;ltimas 2h</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(4);">&Uacute;ltimas 4h</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(8);">&Uacute;ltimas 8h</button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(24);">&Uacute;ltimas 24h </button>
             </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
@@ -257,57 +284,7 @@
             </div>
             <br/>
 
-            <!-- Modal -->
-            <div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">#Pedido </h5>
-                    <input type="number" style="border: none; font-size: 20px;" class="form-control m-2" id="idPedido" placeholder="ID Pedido" readonly/>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <!--Table de items do pedido -->
-                    <div class="overflow-auto h-50" style="min-height: 300px;">
-                      <label for="observacao">Observa&ccedil;&atilde;o:</label>
-                      <textarea class="form-control m-2" id="observacao" maxlength="255" placeholder="Observa&ccedil;&atilde;o"></textarea>
-                      <table class="table m-2" id="itens_pedido_table">
-                          <thead>
-                              <tr>
-                              <th scope="col">ID Produto</th>
-                              <th scope="col">Nome Produto</th>
-                              <th scope="col">Quantidade</th>
-                              <th scope="col">Pre&ccedil;o R$</th>
-                              <th scope="col">Sub Total</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                          </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="overflow-auto h-50">
-                <table class="table m-2" id="historico_pedidos_table">
-                    <thead>
-                        <tr>
-                        <th scope="col">n&deg; Pedido</th>
-                        <th scope="col">Data/Hora</th>
-                        <th scope="col">Nome do Cliente</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Detalhes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+            <div id="container" class="container-fluid">
             </div>
         </div>
     </body>
