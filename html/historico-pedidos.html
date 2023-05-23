@@ -147,6 +147,7 @@
                       console.dir(itensPedido);
                       itensPedido.forEach(item => {
                         insertItemPedido(item.id_menu, item.name, item.quantity, formatPrice(item.price), formatPrice(item.quantity * item.price));
+                        document.getElementById('observacao').value = item.obs;
                       });
                   })
                   .catch(function (error) {
@@ -164,6 +165,7 @@
 
             function cleanTable() {
               cleanTableUtils("historico_pedidos_table");
+              document.getElementById('observacao').value = "";
             }
 
         </script>
@@ -212,7 +214,7 @@
                 <a class="nav-link" style="color: white" href="/cadastro-mesa">Mesas</a>
               </li>
               <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="#">Minha conta</a>
+                <a class="nav-link" style="color: white" href="/minha-conta">Minha conta</a>
               </li>
             </ul>
             <!-- Left links -->
@@ -267,6 +269,8 @@
                   <div class="modal-body">
                     <!--Table de items do pedido -->
                     <div class="overflow-auto h-50" style="min-height: 300px;">
+                      <label for="observacao">Observa&ccedil;&atilde;o:</label>
+                      <textarea class="form-control m-2" id="observacao" maxlength="255" placeholder="Observa&ccedil;&atilde;o"></textarea>
                       <table class="table m-2" id="itens_pedido_table">
                           <thead>
                               <tr>

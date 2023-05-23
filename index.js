@@ -17,6 +17,8 @@ var htmlHistoricoPedidos = '';
 var htmlEsqueciMinhaSenha = '';
 var htmlCadastroMesa = '';
 var htmlCadastroMenuItem = '';
+var htmlMinhaConta = '';
+var htmlUserActivaded = '';
 
 var imgLogo = fs.readFileSync('./html/imgs/logo.JPG');
 var imgLogoBranco = fs.readFileSync('./html/imgs/logo-branco.JPG');
@@ -83,6 +85,22 @@ fs.readFile('./html/change-password.html', 'utf8', (err, data) => {
       return;
   }
   htmlChangePassword = data;
+});
+
+fs.readFile('./html/minha-conta.html', 'utf8', (err, data) => {
+  if (err) {
+      console.error(err);
+      return;
+  }
+  htmlMinhaConta = data;
+});
+
+fs.readFile('./html/user-activated.html', 'utf8', (err, data) => {
+  if (err) {
+      console.error(err);
+      return;
+  }
+  htmlUserActivaded = data;
 });
 
 fs.readFile('./html/js/utils.js', 'utf8', (err, data) => {
@@ -173,6 +191,10 @@ http.createServer(function (req, res) {
         res.writeHead(200);
         res.end(htmlChangePassword);
         break
+    case "/minha-conta":
+        res.writeHead(200);
+        res.end(htmlMinhaConta);
+        break
     case "/cadastro":
         res.writeHead(200);
         res.end(htmlCadastro);
@@ -192,6 +214,10 @@ http.createServer(function (req, res) {
     case "/historico-pedidos":
         res.writeHead(200);
         res.end(htmlHistoricoPedidos);
+        break
+    case "/user-activated":
+        res.writeHead(200);
+        res.end(htmlUserActivaded);
         break
     case "/menu":
         res.writeHead(200);

@@ -60,6 +60,14 @@ function confirmDialog(type, message, timeout, confirmationFunction) {
     }, timeout);
 }
 
+// Processa headers da response
+function parseHttpHeaders(httpHeaders) {
+    return httpHeaders.split("\n")
+    .map(x=>x.split(/: */,2))
+    .filter(x=>x[0])
+    .reduce((ac, x)=>{ac[x[0]] = x[1];return ac;}, {});
+}
+
 // -- Formatting
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
