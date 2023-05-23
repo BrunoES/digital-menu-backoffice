@@ -60,6 +60,15 @@ function confirmDialog(type, message, timeout, confirmationFunction) {
     }, timeout);
 }
 
+function getHeaderFromResponse() {
+    var req = new XMLHttpRequest();
+    req.open('GET', document.location, false);
+    req.send(null);
+    var headers = parseHttpHeaders(req.getAllResponseHeaders().toLowerCase());
+    console.dir(headers);
+    return headers;
+}
+
 // Processa headers da response
 function parseHttpHeaders(httpHeaders) {
     return httpHeaders.split("\n")

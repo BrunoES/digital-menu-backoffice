@@ -5,13 +5,8 @@
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
             function init() {
-              var req = new XMLHttpRequest();
-              req.open('GET', document.location, false);
-              req.send(null);
-              var headers = parseHttpHeaders(req.getAllResponseHeaders().toLowerCase());
-              console.dir(headers);
-              var user = headers.user.trim();
-              console.log(user);
+              // Obtem user que vem do backend, através do redirecionamento de ativação do usuário.
+              var user = getHeaderFromResponse().user.trim();
               document.getElementById("email").value = user;
             }
         </script>
