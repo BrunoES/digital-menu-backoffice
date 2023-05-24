@@ -69,14 +69,14 @@
 
               items.forEach(item => {
                 htmlItems = htmlItems + `
-                  </br>
-                  ${item.id_menu}
-                  ${item.name}
-                  ${item.quantity}
-                  ${formatPrice(item.price)}
-                  <span class="float-right">${formatPrice(item.quantity * item.price)}</span>
-                
+                  <div class="row">
+                    <div class="col-8">
+                      ${item.quantity}  -   ${item.name}
+                    </div>
+                    <div class="col-4">${formatPrice(item.quantity * item.price)}</div>
+                  </div>
                 `;
+                // <span style="float: right;">${formatPrice(item.quantity * item.price)}</span>
               });
 
               return htmlItems;
@@ -90,11 +90,11 @@
                 var htmlItems = buildCheckoutHtml(items);
 
                 html = `
-                <div class="col-md-6 col-lg-5 d-none d-md-block">
-                    <div class="card">
+                <div class="col">
+                    <div class="card m-2">
                       <div class="card-body">
                         <div class="row">
-                          <div class="col">
+                          <div class="col-4">
                             <h5 class="modal-title">#Pedido: ${pedido.id_pedido}</h5>
                             <p>${pedido.date_hour_formatted}</p>
                             <p>Cliente: ${pedido.customer_name}</p>
@@ -102,8 +102,10 @@
                             <label for="observacao">Observa&ccedil;&atilde;o:</label>
                             <textarea class="form-control m-2" style="border: none;" rows="3" id="observacao" maxlength="150" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
                           </div>
-                          <div class="col">
-                            ${htmlItems}
+                          <div class="col-8">
+                            <div class="container">
+                              ${htmlItems}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -135,7 +137,7 @@
 
                 if((pedido1 != null && pedido2 != null) || isUltimoPedido) {
                   var row = `
-                  <div class="row g-0">
+                  <div class="row align-items-center w-100">
                     ${buildHtmlPedido(pedido1)}
                     ${buildHtmlPedido(pedido2)}
                   </div>
