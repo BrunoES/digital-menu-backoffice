@@ -29,8 +29,8 @@
             
             function init() {
               isAuthenticatedInternalPages();
-              //getPedidos();
-              getPedidosUltimasNHoras(30);
+              getPedidos();
+              //getPedidosUltimasNHoras(30);
               document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
             }
 
@@ -54,52 +54,6 @@
               return priorDate.toLocaleDateString("pt-BR");
             }
 
-            $(function() {
-
-              const config = {
-                singleDatePicker: true,
-                showDropdowns: true,
-                minYear: 2023,
-                autoApply: true,
-                locale: {
-                  format: DATE_FORMAT_PT_BR,
-                  daysOfWeek: [
-                      "Dom",
-                      "Seg",
-                      "Ter",
-                      "Qua",
-                      "Qui",
-                      "Sex",
-                      "Sab"
-                  ],
-                  monthNames: [
-                      "Janeiro",
-                      "Fevereiro",
-                      "Mar&ccedil;o",
-                      "Abril",
-                      "Maio",
-                      "Junho",
-                      "Julho",
-                      "Agosto",
-                      "Setembro",
-                      "Outubro",
-                      "Novembro",
-                      "Dezembro"
-                  ],
-                }
-              }
-
-              $('input[name="initialDate"]').daterangepicker(config, function(start, end, label) {
-                console.log("A new date selection was made: " + start.format(DATE_FORMAT_PT_BR) + ' to ' + end.format(DATE_FORMAT_PT_BR));
-                initialDateApi = start.format(DATE_FORMAT_EN);
-                console.log(initialDateApi)
-              });
-              $('input[name="finalDate"]').daterangepicker(config, function(start, end, label) {
-                console.log("A new date selection was made: " + start.format(DATE_FORMAT_PT_BR) + ' to ' + end.format(DATE_FORMAT_PT_BR));
-                finalDateApi = start.format(DATE_FORMAT_EN);
-              });
-            });
-
             function getPedidosUltimasNHoras(numberOfDays) {
               initialDateApi = getCurrentDateMinus(numberOfDays);
               finalDateApi = getCurrentDate();
@@ -115,46 +69,113 @@
 
               items.forEach(item => {
                 htmlItems = htmlItems + `
-                <br></br>
-                <p>
+                  </br>
                   ${item.id_menu}
                   ${item.name}
                   ${item.quantity}
                   ${formatPrice(item.price)}
-                  ${formatPrice(item.quantity * item.price)}
-                </p>
+                  <span class="float-right">${formatPrice(item.quantity * item.price)}</span>
+                
                 `;
               });
 
               return htmlItems;
             }
+            
+            function buildHtmlPedido(p) {
+              var html = "";
+              if(p != null) {
+                var pedido = p.pedido;
+                var items = p.detalheItems;
+                var htmlItems = buildCheckoutHtml(items);
 
-            function buildItemsHtml(data) {
-              var pedido = data.pedido;
-              var items = data.detalheItems;
-              var htmlItems = buildCheckoutHtml(items);
-
-              var oldContent = document.getElementById('container').innerHTML;
-              var checkoutHtml = `
-              <div class="card">
-                <div class="card-body">
-                  <div class="row g-0">
-                    <div class="col-md-6 col-lg-5 d-none d-md-block">
-                      <h5 class="modal-title">#Pedido: ${pedido.id_pedido}</h5>
-                      <p>${pedido.date_hour_formatted}</p>
-                      <p>Cliente: ${pedido.customer_name}</p>
-                      <p>Total: ${formatPrice(pedido.total)}</p>
-                      <label for="observacao">Observa&ccedil;&atilde;o:</label>
-                      <textarea class="form-control m-2" id="observacao" maxlength="255" placeholder="Observa&ccedil;&atilde;o">${pedido.obs}</textarea>
-                    </div>    
-                    <div class="col-md-6 col-lg-7 d-flex">
-                      ${htmlItems}
+                html = `
+                <div class="col-md-6 col-lg-5 d-none d-md-block">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="modal-title">#Pedido: ${pedido.id_pedido}</h5>
+                            <p>${pedido.date_hour_formatted}</p>
+                            <p>Cliente: ${pedido.customer_name}</p>
+                            <p>Total: ${formatPrice(pedido.total)}</p>
+                            <label for="observacao">Observa&ccedil;&atilde;o:</label>
+                            <textarea class="form-control m-2" style="border: none;" rows="3" id="observacao" maxlength="150" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
+                          </div>
+                          <div class="col">
+                            ${htmlItems}
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>`;
+              }
+              return html;
+            }
+
+            function buildHtmlCards(data) {
+              var container = document.getElementById('container');
+              var pedido1 = null;
+              var pedido2 = null;
+              var countPedidos = 0;
+              var isUltimoPedido = false;
+
+              console.log("Data");
+              console.dir(data);
+              data.forEach(p => {
+                countPedidos++;
+                isUltimoPedido = (countPedidos == data.length);
+                console.log(isUltimoPedido);
+
+                if(pedido1 == null) {
+                  pedido1 = p;
+                } else {
+                  pedido2 = p;
+                }
+
+                if((pedido1 != null && pedido2 != null) || isUltimoPedido) {
+                  var row = `
+                  <div class="row g-0">
+                    ${buildHtmlPedido(pedido1)}
+                    ${buildHtmlPedido(pedido2)}
                   </div>
-                </div>
-              </div>
-              `;
-              document.getElementById('container').innerHTML = oldContent + checkoutHtml;
+                  `;
+                  var oldContent = container.innerHTML;
+                  container.innerHTML = oldContent + row;
+
+                  pedido1 = null;
+                  pedido2 = null;
+                }
+
+              });
+
+
+
+/*
+              data.forEach(p => {
+                var pedido = p.pedido;
+
+                if(pedido1 == null) {
+                  pedido1 = pedido;
+                } else {
+                  pedido2 = pedido;
+                }
+                
+                if(pedido1 != null && pedido2 != null) {
+                  var row = `
+                  <div class="row g-0">
+                    ${buildHtmlPedido(pedido1)}
+                    ${buildHtmlPedido(pedido2)}
+                  </div>
+                  `;
+                  var oldContent = container.innerHTML;
+                  container.innerHTML = oldContent + row;
+
+                  pedido1 = null;
+                  pedido2 = null;
+                }
+                
+              });*/
             }
 
             function getPedidos() {
@@ -165,12 +186,8 @@
 
               axios.get(`${ENDPOINT}/${initialDateApi}/${finalDateApi}`, getAuthorizationHeader())
                   .then(function (response) {
-                      console.dir(response);
-                      var pedidos = response.data;
-                      pedidos.forEach(data => {
-                        console.log(data);
-                        buildItemsHtml(data);
-                      });
+                      var data = response.data;
+                      buildHtmlCards(data);
                   })
                   .catch(function (error) {
                       console.log(error);
