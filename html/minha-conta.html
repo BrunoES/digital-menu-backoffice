@@ -17,6 +17,7 @@
             function init() {
               isAuthenticatedInternalPages();
               getDadosEmpresa();
+              document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
 
               var inputPassword = document.getElementById('passwordConfirmation');
               inputPassword.addEventListener("keydown", function (e) {
@@ -126,7 +127,7 @@
     </head>
     <body onload="init()">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff6219;">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #ff6219;">
         <!-- Container wrapper -->
         <div class="container-fluid">
           <!-- Toggle button -->
@@ -177,6 +178,7 @@
 
           <!-- Right elements -->
           <div class="d-flex align-items-center">
+            <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader" />
             <button type="button" class="btn btn-light" onclick="signOut()">
               <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
             </button>

@@ -100,3 +100,8 @@ function formatPrice(price) {
 function cleanPrice(price) {
     return price.replace("R$ ", "").replace(",", ".");
 }
+
+function getCompanyNameFromToken() {
+    var token = retrieveToken();
+    return token.split(",")[2]; // Company name.
+}
