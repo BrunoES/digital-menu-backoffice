@@ -20,13 +20,26 @@
         <script type="text/javascript" src="./js/itens-pedido-tables.js"></script>
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
-            const ENDPOINT = `${BASE_URL}/pedidos-full`;
-            
+            const ENDPOINT_CONSULTA = `${BASE_URL}/pedidos-full`;
+            const ENDPOINT_CHECK = `${BASE_URL}/pedidos/check`;
+            const TIME_TO_RELOAD = 30; // Seconds
+            var secondCounter = 0;
+
             function init() {
               isAuthenticatedInternalPages();
               getPedidosUltimasNHoras(1);
               document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
             }
+
+            setInterval( function(){
+                console.log("1 Second");
+                secondCounter++;
+                document.getElementById("timeToReload").value = (TIME_TO_RELOAD - secondCounter) + " seg";
+                if(secondCounter == TIME_TO_RELOAD) {
+                  getPedidosUltimasNHoras(1000);
+                  secondCounter = 0;
+                }
+            }, 1000);
 
             function getCurrentDate() {
               return formatDateHour(new Date());
@@ -55,9 +68,9 @@
             
             function getPedidos(initialDateHourApi, finalDateHourApi) {
               
-              console.log(`${ENDPOINT}/${initialDateHourApi}/${finalDateHourApi}`);
+              console.log(`${ENDPOINT_CONSULTA}/${initialDateHourApi}/${finalDateHourApi}`);
 
-              axios.get(`${ENDPOINT}/${initialDateHourApi}/${finalDateHourApi}`, getAuthorizationHeader())
+              axios.get(`${ENDPOINT_CONSULTA}/${initialDateHourApi}/${finalDateHourApi}`, getAuthorizationHeader())
                   .then(function (response) {
                       var data = response.data;
                       buildHtmlCards(data);
@@ -93,6 +106,14 @@
                 var items = p.detalheItems;
                 var htmlItems = buildCheckoutHtml(items);
 
+                var labelCheck = "Pedido pendente";
+                var isChecked = "";
+                
+                if (pedido.checked == "1") {
+                  isChecked = "checked disabled";
+                  labelCheck = "Pedido tirado"
+                }
+
                 html = `
                 <div class="col">
                     <div class="card m-2">
@@ -105,6 +126,12 @@
                             <p>Total: ${formatPrice(pedido.total)}</p>
                             <label for="observacao">Observa&ccedil;&atilde;o:</label>
                             <textarea class="form-control m-2" style="border: none;" rows="3" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="${pedido.id_pedido}" onclick="checkPedido(this.value)" ${isChecked}>
+                              <label class="form-check-label" for="flexCheckDefault">
+                                ${labelCheck}
+                              </label>
+                            </div>
                           </div>
                           <div class="col-8">
                             <div class="container">
@@ -154,6 +181,22 @@
                 }
 
               });
+            }
+
+            function checkPedido(pedidoId) {
+              console.log("Marcando pedido " + pedidoId);
+
+              axios.post(ENDPOINT_CHECK, {
+                  pedidoId,
+                },
+                getAuthorizationHeader())
+                .then(function (response) {
+                    console.log(response);
+                    //cleanForm();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             }
 
             function cleanForm() {
@@ -227,7 +270,6 @@
       <!-- Navbar -->
         <div class="form-group form-inline" style="margin-top: 100px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
             <h2 class="m-2">Pedidos em tempo real</h2>
-
             <div class="m-1">
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1);">&Uacute;ltima hora</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(2);">&Uacute;ltimas 2h</button>
@@ -235,6 +277,8 @@
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(8);">&Uacute;ltimas 8h</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(24);">&Uacute;ltimas 24h </button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1000);">&Uacute;ltimas 1000h </button>
+                <span style="font-size: 14px;">Atualizando em ...</span>
+                <input type="text" class="ml-5" style="font-size: 14px; border: none;" size="5" id="timeToReload" />
             </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
