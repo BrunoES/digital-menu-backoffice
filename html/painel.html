@@ -23,6 +23,7 @@
             const ENDPOINT_CONSULTA = `${BASE_URL}/pedidos-full`;
             const ENDPOINT_CHECK = `${BASE_URL}/pedidos/check`;
             const TIME_TO_RELOAD = 30; // Seconds
+            var autoReloadOn = true;
             var secondCounter = 0;
 
             function init() {
@@ -32,6 +33,7 @@
             }
 
             setInterval( function(){
+              if(autoReloadOn) {
                 console.log("1 Second");
                 secondCounter++;
                 document.getElementById("timeToReload").value = (TIME_TO_RELOAD - secondCounter) + " seg";
@@ -39,6 +41,7 @@
                   getPedidosUltimasNHoras(1000);
                   secondCounter = 0;
                 }
+              }
             }, 1000);
 
             function getCurrentDate() {
@@ -87,11 +90,11 @@
 
               items.forEach(item => {
                 htmlItems = htmlItems + `
-                  <div class="row">
-                    <div class="col-8">
+                  <div class="row" style="border-bottom: 1px solid #ECF1EC;">
+                    <div class="col-8" style="font-weight: bold; color: #000000;">
                       ${item.quantity}  -   ${item.name}
                     </div>
-                    <div class="col-4">${formatPrice(item.quantity * item.price)}</div>
+                    <div class="col-4" style="font-weight: bold; color: #000000;">${formatPrice(item.quantity * item.price)}</div>
                   </div>
                 `;
               });
@@ -111,24 +114,24 @@
                 
                 if (pedido.checked == "1") {
                   isChecked = "checked disabled";
-                  labelCheck = "Pedido tirado"
+                  labelCheck = "Em preparo"
                 }
 
                 html = `
                 <div class="col">
-                    <div class="card m-2">
+                    <div class="card m-2" style="background-color: #ffdfcc;">
                       <div class="card-body">
                         <div class="row">
                           <div class="col-4">
-                            <h5 class="modal-title">#Pedido: ${pedido.id_pedido}</h5>
-                            <p>${pedido.date_hour_formatted}</p>
-                            <p>Cliente: ${pedido.customer_name}</p>
-                            <p>Total: ${formatPrice(pedido.total)}</p>
-                            <label for="observacao">Observa&ccedil;&atilde;o:</label>
-                            <textarea class="form-control m-2" style="border: none;" rows="3" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
+                            <h5 class="modal-title" style="font-weight: bold;">#Pedido: ${pedido.id_pedido}</h5>
+                            <p style="font-size: 14px;">${pedido.date_hour_formatted}</p>
+                            <p style="font-weight: bold;">Cliente: ${pedido.customer_name}</p>
+                            <p style="font-weight: bold;">Total: ${formatPrice(pedido.total)}</p>
+                            <label for="observacao" style="font-weight: bold;">Observa&ccedil;&atilde;o:</label>
+                            <textarea class="form-control m-2" style="border: none; font-size: 14px; background-color: #ffdfcc;" rows="3" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="${pedido.id_pedido}" onclick="checkPedido(this.value)" ${isChecked}>
-                              <label class="form-check-label" for="flexCheckDefault">
+                              <label class="form-check-label" style="font-weight: bold; font-size: 20px;" for="flexCheckDefault">
                                 ${labelCheck}
                               </label>
                             </div>
@@ -197,6 +200,10 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            }
+
+            function onOffAutoReload() {
+              autoReloadOn = !autoReloadOn;
             }
 
             function cleanForm() {
@@ -277,6 +284,8 @@
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(8);">&Uacute;ltimas 8h</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(24);">&Uacute;ltimas 24h </button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1000);">&Uacute;ltimas 1000h </button>
+                
+                <input class="form-check-input m-2" id="chkAutoReload" type="checkbox" value="1" onclick="onOffAutoReload()" checked />
                 <span style="font-size: 14px;">Atualizando em ...</span>
                 <input type="text" class="ml-5" style="font-size: 14px; border: none;" size="5" id="timeToReload" />
             </div>
