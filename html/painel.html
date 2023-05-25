@@ -21,49 +21,54 @@
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
             const ENDPOINT = `${BASE_URL}/pedidos-full`;
-            const DATE_FORMAT_PT_BR = 'DD/MM/YYYY';
-            const DATE_FORMAT_EN = 'YYYY/MM/DD';
-
-            var initialDateApi = getCurrentDate();
-            var finalDateApi = getCurrentDate();
             
             function init() {
               isAuthenticatedInternalPages();
-              getPedidos();
-              //getPedidosUltimasNHoras(30);
+              getPedidosUltimasNHoras(1);
               document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
             }
 
             function getCurrentDate() {
-              return new Date().toJSON().slice(0, 10).replaceAll('/', '-');;
+              return formatDateHour(new Date());
             }
 
-            function getFormattedCurrentDate() {
-              return new Date().toLocaleDateString("pt-BR");
-            }
-
-            function getCurrentDateMinus(numberOfDays) {
+            function getCurrentDateMinus(hours) {
               var today = new Date();
-              var priorDate = new Date(new Date().setDate(today.getDate() - numberOfDays));
-              return priorDate.toJSON().slice(0, 10);
+              var priorDate = new Date(new Date().setHours(today.getHours() - hours));
+              return formatDateHour(priorDate);
             }
 
-            function getFormattedCurrentDateMinus(numberOfDays) {
-              var today = new Date();
-              var priorDate = new Date(new Date().setDate(today.getDate() - numberOfDays));
-              return priorDate.toLocaleDateString("pt-BR");
+            function formatDateHour(date) {
+              return date.toJSON().slice(0, 19);
             }
 
-            function getPedidosUltimasNHoras(numberOfDays) {
-              initialDateApi = getCurrentDateMinus(numberOfDays);
-              finalDateApi = getCurrentDate();
+            function getPedidosUltimasNHoras(hours) {
+              cleanForm();
+              var initialDateHourApi = getCurrentDateMinus(hours);
+              var finalDateHourApi = getCurrentDate();
 
-              console.log(initialDateApi);
-              console.log(finalDateApi);
+              console.log(initialDateHourApi);
+              console.log(finalDateHourApi);
 
-              getPedidos();
+              getPedidos(initialDateHourApi, finalDateHourApi);
             }
             
+            function getPedidos(initialDateHourApi, finalDateHourApi) {
+              
+              console.log(`${ENDPOINT}/${initialDateHourApi}/${finalDateHourApi}`);
+
+              axios.get(`${ENDPOINT}/${initialDateHourApi}/${finalDateHourApi}`, getAuthorizationHeader())
+                  .then(function (response) {
+                      var data = response.data;
+                      buildHtmlCards(data);
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  })
+                  .finally(function () {
+                  });
+            }
+
             function buildCheckoutHtml(items) {
               var htmlItems = "";
 
@@ -76,7 +81,6 @@
                     <div class="col-4">${formatPrice(item.quantity * item.price)}</div>
                   </div>
                 `;
-                // <span style="float: right;">${formatPrice(item.quantity * item.price)}</span>
               });
 
               return htmlItems;
@@ -100,7 +104,7 @@
                             <p>Cliente: ${pedido.customer_name}</p>
                             <p>Total: ${formatPrice(pedido.total)}</p>
                             <label for="observacao">Observa&ccedil;&atilde;o:</label>
-                            <textarea class="form-control m-2" style="border: none;" rows="3" id="observacao" maxlength="150" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
+                            <textarea class="form-control m-2" style="border: none;" rows="3" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
                           </div>
                           <div class="col-8">
                             <div class="container">
@@ -150,78 +154,10 @@
                 }
 
               });
-
-
-
-/*
-              data.forEach(p => {
-                var pedido = p.pedido;
-
-                if(pedido1 == null) {
-                  pedido1 = pedido;
-                } else {
-                  pedido2 = pedido;
-                }
-                
-                if(pedido1 != null && pedido2 != null) {
-                  var row = `
-                  <div class="row g-0">
-                    ${buildHtmlPedido(pedido1)}
-                    ${buildHtmlPedido(pedido2)}
-                  </div>
-                  `;
-                  var oldContent = container.innerHTML;
-                  container.innerHTML = oldContent + row;
-
-                  pedido1 = null;
-                  pedido2 = null;
-                }
-                
-              });*/
-            }
-
-            function getPedidos() {
-              initialDateApi = initialDateApi.replaceAll('/', '-');
-              finalDateApi = finalDateApi.replaceAll('/', '-');
-              
-              console.log(`${ENDPOINT}/${initialDateApi}/${finalDateApi}`);
-
-              axios.get(`${ENDPOINT}/${initialDateApi}/${finalDateApi}`, getAuthorizationHeader())
-                  .then(function (response) {
-                      var data = response.data;
-                      buildHtmlCards(data);
-                  })
-                  .catch(function (error) {
-                      console.log(error);
-                  })
-                  .finally(function () {
-                  });
-            }
-
-            function getPedidoById(checkoutId) {
-              cleanTableUtils("itens_pedido_table");
-              document.getElementById('idPedido').value = checkoutId;
-
-              console.log(`${ENDPOINT}/${checkoutId}`);
-
-              axios.get(`${ENDPOINT}/${checkoutId}`, getAuthorizationHeader())
-                  .then(function (response) {
-                      var itensPedido = response.data;
-                      console.dir(itensPedido);
-                      itensPedido.forEach(item => {
-                        insertItemPedido(item.id_menu, item.name, item.quantity, formatPrice(item.price), formatPrice(item.quantity * item.price));
-                        document.getElementById('observacao').value = item.obs;
-                      });
-                  })
-                  .catch(function (error) {
-                      console.log(error);
-                  })
-                  .finally(function () {
-                  });
             }
 
             function cleanForm() {
-
+              document.getElementById('container').innerHTML = "";
             }
 
         </script>
@@ -298,6 +234,7 @@
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(4);">&Uacute;ltimas 4h</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(8);">&Uacute;ltimas 8h</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(24);">&Uacute;ltimas 24h </button>
+                <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1000);">&Uacute;ltimas 1000h </button>
             </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
