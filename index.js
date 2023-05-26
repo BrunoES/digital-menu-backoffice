@@ -23,6 +23,7 @@ var htmlPainel = '';
 
 var imgLogo = fs.readFileSync('./html/imgs/logo.JPG');
 var imgLogoBranco = fs.readFileSync('./html/imgs/logo-branco.JPG');
+var defaultImg = fs.readFileSync('./html/imgs/default.jpg');
 
 fs.readFile('./html/cadastro.html', 'utf8', (err, data) => {
   if (err) {
@@ -195,6 +196,12 @@ http.createServer(function (req, res) {
         res.setHeader("Content-Type", "image/jpeg");
         res.writeHead(200);
         res.end(imgLogoBranco);
+        break
+
+    case "/imgs/default.jpg":
+        res.setHeader("Content-Type", "image/jpeg");
+        res.writeHead(200);
+        res.end(defaultImg);
         break
     case "/change-password":
         res.writeHead(200);

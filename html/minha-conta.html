@@ -7,17 +7,20 @@
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
             const ENDPOINT = `${BASE_URL}/company`;
-
+            const MSG_SUCCESS_SAVE = "Imagem atualizada com sucesso";
             const MSG_FORM_CADASTRO_ERROR = "Preencha todos os campos.";
             const MSG_FIELD_PASSWORD_ERROR = "As senhas n&atilde;o conferem.";
-            const MSG_FORM_ERRO = "Ocorreu um problema ao atualizar seus dados, tente novamente mais tarde.";
+            const MSG_FORM_ERROR = "Ocorreu um problema ao atualizar seus dados, tente novamente mais tarde.";
             const MSG_FIELD_PASSWORD_INVALID = "A senha deve conter entre 8 e 12 characteres, pelo menos um n&uacute;mero, e um caracter especial.";
+            const DEFAULT_IMG = "./imgs/default.jpg";
+
             var MSG_EMAIL_CONFIRMATION_SENDED = "";
 
             function init() {
               isAuthenticatedInternalPages();
               getDadosEmpresa();
               document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
+              //document.getElementById('companyLogo').src = DEFAULT_IMG;
 
               var inputPassword = document.getElementById('passwordConfirmation');
               inputPassword.addEventListener("keydown", function (e) {
@@ -26,6 +29,41 @@
                   }
               });
             }
+
+            var loadPreview = function(event) {
+                var output = document.getElementById('companyLogo');
+                output.src = URL.createObjectURL(event.target.files[0]);
+
+                var reader = new FileReader();
+                var photo = document.getElementById('photo').files[0];
+                var imgType = photo.type
+                
+                reader.readAsDataURL(photo);
+                reader.onload = function () {
+                  var base64Img =  reader.result;
+
+                  if(base64Img != "") {
+                    var image = {
+                        base64: base64Img,
+                        type: imgType
+                    };
+                    
+                    axios.post(`${ENDPOINT}/logo`, {
+                        image
+                      },
+                      getAuthorizationHeader())
+                      .then(function (response) {
+                          console.log(response);
+                          alertMessage(MSG_TYPE_SUCCESS, MSG_SUCCESS_SAVE, TIMEOUT_MSG_SUCCESS);
+                      })
+                      .catch(function (error) {
+                          console.log(error);
+                      });
+                  } else {
+                      alertMessage(MSG_TYPE_DANGER, MSG_FORM_ERROR, TIMEOUT_MSG_DANGER);
+                  }
+              };
+            };
 
             function getDadosEmpresa() {
               axios.get(ENDPOINT, getAuthorizationHeader())
@@ -127,7 +165,7 @@
     </head>
     <body onload="init()">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #ff6219;">
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff6219;">
         <!-- Container wrapper -->
         <div class="container-fluid">
           <!-- Toggle button -->
@@ -188,18 +226,16 @@
         <!-- Container wrapper -->
       </nav>
       <!-- Navbar -->
-        <section class="vh-100" style="background-color: coral;">
-            <div class="container py-5 h-100">
-              <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-xl-10">
-                  <div class="card" style="border-radius: 1rem;">
+        <section class="vh-100" >
+              <div class="justify-content-center align-items-center h-100 container py-5">
                     <div class="row g-0">
-                      <div class="col-md-6 col-lg-5 d-none d-md-block">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                          alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                      <div class="col">
+                          <label for="photo">Envie sua logo:</label>
+                          <input type="file" class="form-control" style="width: 400px" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
+                          <img id="companyLogo" class="rounded float-left img-fluid" style="border-radius: 10px; max-width: 100%; height: auto;" alt="Responsive image" src="./imgs/default.jpg"></img>            
                       </div>
-                      <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                        <div class="card-body p-4 p-lg-5 text-black">
+                      <div class="col">
+                        <div class="card-body pl-4  text-black">
           
                           <form id="formMinhaConta">
           
@@ -250,10 +286,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
               </div>
-            </div>
           </section>          
     </body>
 </html>

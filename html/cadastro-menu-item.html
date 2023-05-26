@@ -10,13 +10,13 @@
         <script type="text/javascript" src="./js/utils.js"></script>
         <script type="text/javascript">
             const ENDPOINT = `${BASE_URL}/menu-items`;
-            const DEFAULT_IMG = "./imgs/slider-icon.png";
+            const DEFAULT_IMG = "./imgs/default.jpg";
             const MSG_FORM_ERROR = "Preencha todos os campos do produto.";
             const MSG_SUCCESS_SAVE = "Produto salvo com sucesso";
             const MSG_SUCCESS_CHANGE = "Produto alterado com sucesso";
             const MSG_SUCCESS_DELETE = "Produto deletado com sucesso";
             const MSG_DIALOG_DELETE = "Tem certeza que deseja deletar este produto?";
-
+            
             var sequence = 0;            
             var pessoas = [];
             var base64Imgs = [];
@@ -309,7 +309,7 @@
                         <input type="file" class="form-control" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
                     </div>
                     <div class="col-sm">
-                        <img id="productImage" class="rounded float-left w-25" alt="Responsive image" src="./imgs/slider-icon.png"></img>            
+                        <img id="productImage" class="rounded float-left w-25" alt="Responsive image" src="./imgs/default.jpg"></img>            
                     </div>  
                 </div>
             </div>
