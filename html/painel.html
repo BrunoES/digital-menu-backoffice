@@ -22,9 +22,11 @@
         <script type="text/javascript">
             const ENDPOINT_CONSULTA = `${BASE_URL}/pedidos-full`;
             const ENDPOINT_CHECK = `${BASE_URL}/pedidos/check`;
+            const ENDPOINT_COUNT = `${BASE_URL}/pedidos/count`;
             const TIME_TO_RELOAD = 30; // Seconds
-            var autoReloadOn = true;
-            var secondCounter = 0;
+            var pedidosCounter = 0;
+            //var autoReloadOn = true;
+            //var secondCounter = 0;
 
             function init() {
               isAuthenticatedInternalPages();
@@ -32,6 +34,7 @@
               document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
             }
 
+            /*
             setInterval( function(){
               if(autoReloadOn) {
                 console.log("1 Second");
@@ -43,6 +46,25 @@
                 }
               }
             }, 1000);
+            */
+
+            setInterval( function(){
+                axios.get(`${ENDPOINT_COUNT}`, getAuthorizationHeader())
+                  .then(function (response) {
+                      var data = response.data;
+                      console.log(data);
+                      if(pedidosCounter != data.count) {
+                        getPedidosUltimasNHoras(1000);
+                        pedidosCounter = data.count;
+                      }
+                      console.log(pedidosCounter);
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  })
+                  .finally(function () {
+                  });
+            }, 10000);
 
             function getCurrentDate() {
               return formatDateHour(new Date());
@@ -284,10 +306,11 @@
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(8);">&Uacute;ltimas 8h</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(24);">&Uacute;ltimas 24h </button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1000);">&Uacute;ltimas 1000h </button>
-                
+                <!--
                 <input class="form-check-input m-2" id="chkAutoReload" type="checkbox" value="1" onclick="onOffAutoReload()" checked />
                 <span style="font-size: 14px;">Atualizando em ...</span>
                 <input type="text" class="ml-5" style="font-size: 14px; border: none;" size="5" id="timeToReload" />
+                -->
             </div>
             <div id="liveAlertPlaceholder" class="fixed-bottom">
             </div>
