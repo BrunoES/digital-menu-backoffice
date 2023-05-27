@@ -25,7 +25,7 @@
             const ENDPOINT_COUNT = `${BASE_URL}/pedidos/count`;
             const TIME_TO_RELOAD = 30; // Seconds
             var pedidosCounter = 0;
-            //var autoReloadOn = true;
+            var autoReloadOn = true;
             //var secondCounter = 0;
 
             function init() {
@@ -49,6 +49,7 @@
             */
 
             setInterval( function(){
+              if(autoReloadOn) {
                 axios.get(`${ENDPOINT_COUNT}`, getAuthorizationHeader())
                   .then(function (response) {
                       var data = response.data;
@@ -64,6 +65,7 @@
                   })
                   .finally(function () {
                   });
+              }
             }, 10000);
 
             function getCurrentDate() {
@@ -310,6 +312,8 @@
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(8);">&Uacute;ltimas 8h</button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(24);">&Uacute;ltimas 24h </button>
                 <button type="button" class="btn btn-primary" onclick="getPedidosUltimasNHoras(1000);">&Uacute;ltimas 1000h </button>
+                <label class="m-1" for="chkAutoReload">Atualiza&ccedil;&atilde;o autom&aacute;tica</label>
+                <input class="form-check-input mt-2" id="chkAutoReload" type="checkbox" value="1" onclick="onOffAutoReload()" checked />
                 <!--
                 <input class="form-check-input m-2" id="chkAutoReload" type="checkbox" value="1" onclick="onOffAutoReload()" checked />
                 <span style="font-size: 14px;">Atualizando em ...</span>
