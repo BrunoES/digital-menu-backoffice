@@ -24,6 +24,9 @@
             const ENDPOINT_CHECK = `${BASE_URL}/pedidos/check`;
             const ENDPOINT_COUNT = `${BASE_URL}/pedidos/count`;
             const TIME_TO_RELOAD = 30; // Seconds
+            const STATUS_PEDIDO_CHECK = "Encaminhado";
+            const STATUS_PEDIDO_PEND = "Pendente";
+
             var pedidosCounter = 0;
             var autoReloadOn = true;
             //var secondCounter = 0;
@@ -132,14 +135,18 @@
                 var pedido = p.pedido;
                 var items = p.detalheItems;
                 var htmlItems = buildCheckoutHtml(items);
+                var idFieldStadus = `status${pedido.id_pedido}`;
+                var idCheckStadus = `check${pedido.id_pedido}`;
 
-                var labelCheck = "Pedido pendente";
+                var labelCheck = STATUS_PEDIDO_PEND;
                 var isChecked = "";
                 
                 if (pedido.checked == "1") {
                   isChecked = "checked disabled";
-                  labelCheck = "Encaminhado"
+                  labelCheck = STATUS_PEDIDO_CHECK;
                 }
+
+                console.log(idFieldStadus);
 
                 html = `
                 <div class="col">
@@ -154,10 +161,10 @@
                             <label for="observacao" style="font-weight: bold;">Observa&ccedil;&atilde;o:</label>
                             <textarea class="form-control m-2" style="border: none; font-size: 14px; background-color: #ffdfcc;" rows="3" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o" readonly>${pedido.obs}</textarea>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="${pedido.id_pedido}" onclick="checkPedido(this.value)" ${isChecked}>
+                              <input class="form-check-input" type="checkbox" id="${idCheckStadus}" value="${pedido.id_pedido}" onclick="checkPedido(this.value, '${idFieldStadus}', '${idCheckStadus}')" ${isChecked}>
                               <label class="form-check-label" style="font-weight: bold; font-size: 20px;" for="flexCheckDefault">
-                                ${labelCheck}
                               </label>
+                              <input type="text" id="${idFieldStadus}" class="ml-5" style="font-size: 14px; border: none; background-color: #ffdfcc;" value="${labelCheck}">
                             </div>
                           </div>
                           <div class="col-8">
@@ -214,7 +221,7 @@
               });
             }
 
-            function checkPedido(pedidoId) {
+            function checkPedido(pedidoId, idFieldStadus, idCheckStadus) {
               console.log("Marcando pedido " + pedidoId);
 
               axios.post(ENDPOINT_CHECK, {
@@ -223,7 +230,10 @@
                 getAuthorizationHeader())
                 .then(function (response) {
                     console.log(response);
-                    //cleanForm();
+                    console.log("Mudando valor de: " + idFieldStadus);
+                    console.log("Desabilitando check: " + idCheckStadus);
+                    document.getElementById(idFieldStadus).value = STATUS_PEDIDO_CHECK;
+                    document.getElementById(idCheckStadus).disabled = true;
                 })
                 .catch(function (error) {
                     console.log(error);
