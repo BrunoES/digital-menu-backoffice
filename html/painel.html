@@ -136,7 +136,7 @@
                 
                 if (pedido.checked == "1") {
                   isChecked = "checked disabled";
-                  labelCheck = "Em preparo"
+                  labelCheck = "Encaminhado"
                 }
 
                 html = `
@@ -167,6 +167,10 @@
                       </div>
                     </div>
                   </div>`;
+              } else {
+                // Se o card é vazio, gera a coluna vazio para preencher o espaçamento.
+                html = `
+                <div class="col"></div>`;
               }
               return html;
             }
