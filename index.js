@@ -25,7 +25,7 @@ var imgLogo = fs.readFileSync('./html/imgs/logo.JPG');
 var imgLogoBranco = fs.readFileSync('./html/imgs/logo-branco.JPG');
 var defaultImg = fs.readFileSync('./html/imgs/default.jpg');
 
-fs.readFile('./html/cadastro.html', 'utf8', (err, data) => {
+fs.readFile('./html/signup.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -33,7 +33,7 @@ fs.readFile('./html/cadastro.html', 'utf8', (err, data) => {
   htmlCadastro = data;
 });
 
-fs.readFile('./html/cadastro-mesa.html', 'utf8', (err, data) => {
+fs.readFile('./html/mesas.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -41,7 +41,7 @@ fs.readFile('./html/cadastro-mesa.html', 'utf8', (err, data) => {
   htmlCadastroMesa = data;
 });
 
-fs.readFile('./html/cadastro-menu-item.html', 'utf8', (err, data) => {
+fs.readFile('./html/products.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -65,7 +65,7 @@ fs.readFile('./html/menu.html', 'utf8', (err, data) => {
   htmlMenu = data;
 });
 
-fs.readFile('./html/historico-pedidos.html', 'utf8', (err, data) => {
+fs.readFile('./html/checkout-history.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -73,7 +73,7 @@ fs.readFile('./html/historico-pedidos.html', 'utf8', (err, data) => {
   htmlHistoricoPedidos = data;
 });
 
-fs.readFile('./html/esqueci-minha-senha.html', 'utf8', (err, data) => {
+fs.readFile('./html/forgot-password.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -89,7 +89,7 @@ fs.readFile('./html/change-password.html', 'utf8', (err, data) => {
   htmlChangePassword = data;
 });
 
-fs.readFile('./html/minha-conta.html', 'utf8', (err, data) => {
+fs.readFile('./html/my-account.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -105,7 +105,7 @@ fs.readFile('./html/user-activated.html', 'utf8', (err, data) => {
   htmlUserActivaded = data;
 });
 
-fs.readFile('./html/painel.html', 'utf8', (err, data) => {
+fs.readFile('./html/panel.html', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
       return;
@@ -207,27 +207,27 @@ http.createServer(function (req, res) {
         res.writeHead(200);
         res.end(htmlChangePassword);
         break
-    case "/minha-conta":
+    case "/my-account":
         res.writeHead(200);
         res.end(htmlMinhaConta);
         break
-    case "/cadastro":
+    case "/signup":
         res.writeHead(200);
         res.end(htmlCadastro);
         break
-    case "/cadastro-menu-item":
+    case "/products":
         res.writeHead(200);
         res.end(htmlCadastroMenuItem);
         break
-    case "/cadastro-mesa":
+    case "/mesas":
         res.writeHead(200);
         res.end(htmlCadastroMesa);
         break
-    case "/esqueci-minha-senha":
+    case "/forgot-password":
         res.writeHead(200);
         res.end(htmlEsqueciMinhaSenha);
         break
-    case "/historico-pedidos":
+    case "/checkout-history":
         res.writeHead(200);
         res.end(htmlHistoricoPedidos);
         break
@@ -235,7 +235,7 @@ http.createServer(function (req, res) {
         res.writeHead(200);
         res.end(htmlUserActivaded);
         break
-    case "/painel":
+    case "/panel":
         res.writeHead(200);
         res.end(htmlPainel);
         break
