@@ -69,9 +69,11 @@
               axios.get(ENDPOINT, getAuthorizationHeader())
                   .then(function (response) {
                       console.log(response.data);
-                      var companyData = response.data[0];
+                      var companyData = response.data.company;
+                      var base64Img = response.data.base64Img;
                       document.getElementById('name').value = companyData.company_name;
                       document.getElementById('email').value = companyData.user_email;
+                      document.getElementById('companyLogo').src = base64Img;
                       MSG_EMAIL_CONFIRMATION_SENDED = `Enviado um link de confirma&ccedil;&atilde;o para seu e-mail ${companyData.user_email}. Acesse-o para reativar e acessar sua conta, ap&oacute;s isso, realize o login novamente.`
                   })
                     .catch(function (error) {
