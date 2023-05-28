@@ -331,24 +331,16 @@
                         <input type="number" class="form-control m-2" id="price" placeholder="Pre&ccedil;o R$" oninput="maskPrice(event)"/>
                     </div>
                     <div class="col">
-                        <div class="col">
-                            <div class="container m-1">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="photo">Foto do Produto:</label>
-                                        <input type="file" class="form-control" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
-                                        <div class="ml-5 mt-4">
-                                            <button type="button" class="btn btn-success" onclick="save();">Salvar</button>
-                                            <button type="button" class="btn btn-primary" onclick="getProdutos();">Consultar</button>
-                                            <button type="button" class="btn btn-warning" onclick="cleanForm();">Novo</button>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <img id="productImage" class="rounded float-left w-75" alt="Responsive image" src="./imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
-                                    </div>
-                                </div>
-                            </div>
+                        <label for="photo">Foto do Produto:</label>
+                        <input type="file" class="form-control" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
+                        <div class="ml-5 mt-4">
+                            <button type="button" class="btn btn-success" onclick="save();">Salvar</button>
+                            <button type="button" class="btn btn-primary" onclick="getProdutos();">Consultar</button>
+                            <button type="button" class="btn btn-warning" onclick="cleanForm();">Novo</button>
                         </div>
+                    </div>
+                    <div class="col">
+                        <img id="productImage" class="rounded w-50" alt="Responsive image" src="./imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
                     </div>
                 </div>
             </div>

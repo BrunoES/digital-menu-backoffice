@@ -180,6 +180,7 @@
                   return false;
                 }
               }
+              return true;
             }  
 
             function save() {
@@ -193,7 +194,7 @@
               console.log(password)
               console.log(passwordConfirmation)
 
-              if (name == "" || user == "" || password == "" || passwordConfirmation == "") {
+              if (name == "" || user == "" || ((password != "" && passwordConfirmation == "") || (passwordConfirmation != "" && password == ""))){
                 alertMessage(MSG_TYPE_DANGER, MSG_FORM_CADASTRO_ERROR, TIMEOUT_MSG_DANGER);
                 return;
               }
@@ -203,6 +204,8 @@
               if(!validaSenha(password)) {
                 return;
               }
+
+              console.log("Cheguei aqui");
                 
               axios.put(ENDPOINT, {
                     name,
