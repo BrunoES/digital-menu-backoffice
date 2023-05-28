@@ -11,6 +11,11 @@
             const MSG_FORM_CADASTRO_ERROR = "Preencha todos os campos.";
             const MSG_FIELD_PASSWORD_ERROR = "As senhas n&atilde;o conferem.";
             const MSG_FORM_ERROR = "Ocorreu um problema ao atualizar seus dados, tente novamente mais tarde.";
+            /*
+            const MSG_IMG_DIMENSIONS = "As dimens&otilde;es da imagem devem estar entre 250 x 150 e 1024 x 768";
+            const MSG_IMG_DIMENSIONS_WIDTH = `Largura n&atilde;o permitida. ${MSG_IMG_DIMENSIONS}`;
+            const MSG_IMG_DIMENSIONS_HEIGTH = `Altura n&atilde;o permitida. ${MSG_IMG_DIMENSIONS}`;
+            */
             const MSG_FIELD_PASSWORD_INVALID = "A senha deve conter entre 8 e 12 characteres, pelo menos um n&uacute;mero, e um caracter especial.";
             const DEFAULT_IMG = "./imgs/default.jpg";
 
@@ -20,7 +25,6 @@
               isAuthenticatedInternalPages();
               getDadosEmpresa();
               document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
-              //document.getElementById('companyLogo').src = DEFAULT_IMG;
 
               var inputPassword = document.getElementById('passwordConfirmation');
               inputPassword.addEventListener("keydown", function (e) {
@@ -30,40 +34,90 @@
               });
             }
 
-            var loadPreview = function(event) {
-                var output = document.getElementById('companyLogo');
-                output.src = URL.createObjectURL(event.target.files[0]);
+            function validaDimensoes(file) {
+              var _URL = window.URL || window.webkitURL;
 
-                var reader = new FileReader();
-                var photo = document.getElementById('photo').files[0];
-                var imgType = photo.type
-                
-                reader.readAsDataURL(photo);
-                reader.onload = function () {
-                  var base64Img =  reader.result;
+              if (file) {
+                  img = new Image();
+                  var objectUrl = _URL.createObjectURL(file);
+                  img.onload = function () {
+                      if((this.width / this.height) < 1 || (this.width / this.height) > 1.67) {
+                        alertMessage(MSG_TYPE_DANGER, MSG_IMG_DIMENSIONS_DEFAULT, TIMEOUT_MSG_DANGER);
+                        return false;
+                      } else {
+                        uploadImagem(file);
+                      }
+                      _URL.revokeObjectURL(objectUrl);
+                  };
+                  img.src = objectUrl;
+              }
 
-                  if(base64Img != "") {
-                    var image = {
-                        base64: base64Img,
-                        type: imgType
-                    };
-                    
-                    axios.post(`${ENDPOINT}/logo`, {
-                        image
-                      },
-                      getAuthorizationHeader())
-                      .then(function (response) {
-                          console.log(response);
-                          alertMessage(MSG_TYPE_SUCCESS, MSG_SUCCESS_SAVE, TIMEOUT_MSG_SUCCESS);
-                      })
-                      .catch(function (error) {
-                          console.log(error);
-                      });
-                  } else {
-                      alertMessage(MSG_TYPE_DANGER, MSG_FORM_ERROR, TIMEOUT_MSG_DANGER);
-                  }
+              return true;
+            }
+
+            function uploadImagem(photo) {
+              var reader = new FileReader();
+              var imgType = photo.type
+              
+              reader.readAsDataURL(photo);
+              reader.onload = function () {
+                var base64Img =  reader.result;
+                document.getElementById('companyLogo').src = base64Img;
+
+                if(base64Img != "") {
+                  var image = {
+                      base64: base64Img,
+                      type: imgType
+                  };
+                  
+                  axios.post(`${ENDPOINT}/logo`, {
+                      image
+                    },
+                    getAuthorizationHeader())
+                    .then(function (response) {
+                        console.log(response);
+                        alertMessage(MSG_TYPE_SUCCESS, MSG_SUCCESS_SAVE, TIMEOUT_MSG_SUCCESS);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                } else {
+                    alertMessage(MSG_TYPE_DANGER, MSG_FORM_ERROR, TIMEOUT_MSG_DANGER);
+                }
               };
+            }
+            
+            var loadImage = function(event) {
+              var photo = event.target.files[0];
+              validaDimensoes(photo);
             };
+
+            /*
+            function resizeImage(imgToResize) {
+              const resizingFactor = 0.5;
+              const canvas = document.createElement("canvas");
+              const context = canvas.getContext("2d");
+
+              const originalWidth = imgToResize.width;
+              const originalHeight = imgToResize.height;
+
+              const canvasWidth = originalWidth * resizingFactor;
+              const canvasHeight = originalHeight * resizingFactor;
+
+              canvas.width = canvasWidth;
+              canvas.height = canvasHeight;
+
+              context.drawImage(
+                imgToResize,
+                0,
+                0,
+                originalWidth * resizingFactor,
+                originalHeight * resizingFactor
+              );
+
+              return canvas.toDataURL();
+            }
+            */
 
             function getDadosEmpresa() {
               axios.get(ENDPOINT, getAuthorizationHeader())
@@ -233,8 +287,9 @@
                     <div class="row g-0">
                       <div class="col">
                           <label for="photo">Envie sua logo:</label>
-                          <input type="file" class="form-control" style="width: 400px" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
-                          <img id="companyLogo" class="rounded float-left img-fluid" style="border-radius: 10px; max-width: 100%; height: auto;" alt="Responsive image" src="./imgs/default.jpg"></img>            
+                          <input type="file" class="form-control" style="width: 500px" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadImage(event)">
+                          <!--<img id="companyLogo" hidden></img>-->
+                          <img id="companyLogo" class="rounded float-left img-fluid mt-5" style="border-radius: 10px; max-width: 50%; height: auto;" src="./imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
                       </div>
                       <div class="col">
                         <div class="card-body pl-4  text-black">

@@ -2,6 +2,7 @@ const BASE_URL = "http://localhost:8080";
 
 const MSG_READY_TO_EDIT = "Altere os campos do formul&aacute;rio e em seguida salve suas altera&ccedil;ões.";
 const MSG_FIELD_EMAIL_ERROR = "E-mail inv&aacute;lido, confira.";
+const MSG_IMG_DIMENSIONS_DEFAULT = "A imagem &eacute;	muito estreita, ou muito larga.";
 const TIMEOUT_MSG_DANGER = 4500;
 const TIMEOUT_MSG_SUCCESS = 3000;
 const TIMEOUT_MSG_DIALOG = 10000;
@@ -104,4 +105,8 @@ function cleanPrice(price) {
 function getCompanyNameFromToken() {
     var token = retrieveToken();
     return token.split(",")[2]; // Company name.
+}
+
+function openImageExplorer(inputName) {
+    document.getElementById(inputName).click();
 }

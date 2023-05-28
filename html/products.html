@@ -27,9 +27,31 @@
                 document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
             }
 
+            function validaDimensoes(file, output) {
+              var _URL = window.URL || window.webkitURL;
+
+              if (file) {
+                  var img = new Image();
+                  var objectUrl = _URL.createObjectURL(file);
+                  img.onload = function () {
+                      if((this.width / this.height) < 1 || (this.width / this.height) > 1.67) {
+                        alertMessage(MSG_TYPE_DANGER, MSG_IMG_DIMENSIONS_DEFAULT, TIMEOUT_MSG_DANGER);
+                        return false;
+                      } else {
+                        output.src = URL.createObjectURL(file);
+                      }
+                      _URL.revokeObjectURL(objectUrl);
+                  };
+                  img.src = objectUrl;
+              }
+
+              return true;
+            }
+
             var loadPreview = function(event) {
+                var photo = event.target.files[0];
                 var output = document.getElementById('productImage');
-                output.src = URL.createObjectURL(event.target.files[0]);
+                validaDimensoes(photo, output);
             };
 
             var maskPrice = function(event) {
@@ -309,7 +331,7 @@
                         <input type="file" class="form-control" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadPreview(event)">
                     </div>
                     <div class="col-sm">
-                        <img id="productImage" class="rounded float-left w-25" alt="Responsive image" src="./imgs/default.jpg"></img>            
+                        <img id="productImage" class="rounded float-left w-25" alt="Responsive image" src="./imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
                     </div>  
                 </div>
             </div>
