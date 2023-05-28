@@ -32,9 +32,9 @@
             //var secondCounter = 0;
 
             function init() {
+              getDadosEmpresaHeader();
               isAuthenticatedInternalPages();
               getPedidosUltimasNHoras(1);
-              document.getElementById("companyNameHeader").value = getCompanyNameFromToken();
             }
 
             /*
@@ -247,7 +247,7 @@
             function cleanForm() {
               document.getElementById('container').innerHTML = "";
             }
-            
+
         </script>
     </head>
     <body onload="init()">
@@ -303,7 +303,10 @@
 
           <!-- Right elements -->
           <div class="d-flex align-items-center">
-            <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader" />
+            <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader"/>
+            <div style="width: 50px; margin: 5px;">
+              <img id="companyLogoHeader" class="rounded" style="border-radius: 10px; max-width: 100%; height: auto;" src="getCompanyLogoFromLocalStorage();"></img>
+            </div>
             <button type="button" class="btn btn-light" onclick="signOut()">
               <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
             </button>

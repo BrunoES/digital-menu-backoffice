@@ -12,6 +12,9 @@ const MSG_TYPE_DANGER = 'danger';
 const MSG_TYPE_WARNING = 'warning';
 const MSG_TYPE_PRIMARY= 'primary';
 
+const LOGO_NAME = 'company-logo';
+const COMPANY_NAME = 'company-name';
+
 // -- Alert & Dialogs
 function closeAlerts() {
     document.getElementById('liveAlertPlaceholder').innerHTML = "";
@@ -107,6 +110,53 @@ function getCompanyNameFromToken() {
     return token.split(",")[2]; // Company name.
 }
 
+function setCompanyLogoToLocalStorage(base64Img) {
+    window.localStorage.setItem(LOGO_NAME, base64Img);
+}
+
+function getCompanyLogoFromLocalStorage() {
+    return window.localStorage.getItem(LOGO_NAME);
+}
+
+function setCompanyNameToLocalStorage(base64Img) {
+    window.localStorage.setItem(COMPANY_NAME, base64Img);
+}
+
+function getCompanyNameFromLocalStorage() {
+    return window.localStorage.getItem(COMPANY_NAME);
+}
+
 function openImageExplorer(inputName) {
     document.getElementById(inputName).click();
+}
+
+
+function getDadosEmpresaHeader() {
+    var oldBase64Img = getCompanyLogoFromLocalStorage();
+    var oldName = getCompanyNameFromLocalStorage();
+
+    document.getElementById("companyLogoHeader").src = oldBase64Img;
+    document.getElementById("companyNameHeader").value = oldName;
+
+    axios.get(`${BASE_URL}/company`, getAuthorizationHeader())
+        .then(function (response) {
+            console.log(response.data);
+            var companyData = response.data;
+            var name = companyData.name;
+            var base64Img = companyData.base64Img;
+            
+            if(name != oldName) {
+                document.getElementById("companyNameHeader").value = name;
+                setCompanyLogoToLocalStorage(base64Img);
+            }
+            if(base64Img != oldBase64Img) {
+                document.getElementById("companyLogoHeader").src = base64Img;
+                setCompanyLogoToLocalStorage(base64Img);
+            }
+        })
+            .catch(function (error) {
+            console.log(error);
+        })
+            .finally(function () {
+        });
 }
