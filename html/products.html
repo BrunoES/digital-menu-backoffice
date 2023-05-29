@@ -255,70 +255,70 @@
         </script>
     </head>
     <body onload="init()">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #ff6219;">
-        <!-- Container wrapper -->
-        <div class="container-fluid">
-          <!-- Toggle button -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="fas fa-bars"></i>
-          </button>
-
-          <!-- Collapsible wrapper -->
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Navbar brand -->
-            <a class="navbar-brand mt-2 mt-lg-0" href="/menu">
-              <img
-                src="./imgs/logo.JPG"
-                height="50"
-                alt="MDB Logo"
-                loading="lazy"
-              />
-            </a>
-            <!-- Left links -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="/panel">Painel de Pedidos</a>
-              </li>
-              <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="/checkout-history">Hist&#243;rico de Pedidos</a>
-              </li>
-              <li class="nav-item m-2">
-                <a class="nav-link lg-4" style="color: white" href="/products">Produtos</a>
-              </li>
-              <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="/mesas">Mesas</a>
-              </li>
-              <li class="nav-item m-2">
-                <a class="nav-link" style="color: white" href="/my-account">Minha conta</a>
-              </li>
-            </ul>
-            <!-- Left links -->
-          </div>
-          <!-- Collapsible wrapper -->
-
-          <!-- Right elements -->
-          <div class="d-flex align-items-center">
-            <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader"/>
-            <div style="width: 50px; margin: 5px;">
-                <img id="companyLogoHeader" class="rounded" style="border-radius: 10px; max-width: 100%; height: auto;" src="getCompanyLogoFromLocalStorage();"></img>
-            </div>
-            <button type="button" class="btn btn-light" onclick="signOut()">
-              <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+         <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #ff6219;">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
+            <!-- Toggle button -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
             </button>
-          </div>
-          <!-- Right elements -->
-        </div>
-        <!-- Container wrapper -->
-      </nav>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Navbar brand -->
+                <a class="navbar-brand mt-2 mt-lg-0" href="/menu">
+                <img
+                    src="./imgs/logo.JPG"
+                    height="50"
+                    alt="MDB Logo"
+                    loading="lazy"
+                />
+                </a>
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item m-2">
+                    <a class="nav-link" style="color: white" href="/panel">Painel de Pedidos</a>
+                </li>
+                <li class="nav-item m-2">
+                    <a class="nav-link" style="color: white" href="/checkout-history">Hist&#243;rico de Pedidos</a>
+                </li>
+                <li class="nav-item m-2">
+                    <a class="nav-link lg-4" style="color: white" href="/products">Produtos</a>
+                </li>
+                <li class="nav-item m-2">
+                    <a class="nav-link" style="color: white" href="/mesas">Mesas</a>
+                </li>
+                <li class="nav-item m-2">
+                    <a class="nav-link" style="color: white" href="/my-account">Minha conta</a>
+                </li>
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+
+            <!-- Right elements -->
+            <div class="d-flex align-items-center">
+                <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader"/>
+                <div style="width: 50px; margin: 5px;">
+                    <img id="companyLogoHeader" class="rounded" style="border-radius: 10px; max-width: 100%; height: auto;" src="getCompanyLogoFromLocalStorage();"></img>
+                </div>
+                <button type="button" class="btn btn-light" onclick="signOut()">
+                <i class="fa fa-sign-out" aria-hidden="true"></i> Sair
+                </button>
+            </div>
+            <!-- Right elements -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
       <!-- Navbar -->
         <div class="form-group" style="margin-top: 100px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
             <h2>Cadastro de Produtos</h2>
