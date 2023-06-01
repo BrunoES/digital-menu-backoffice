@@ -115,7 +115,9 @@ function setCompanyLogoToLocalStorage(base64Img) {
 }
 
 function getCompanyLogoFromLocalStorage() {
-    return window.localStorage.getItem(LOGO_NAME);
+    var source = window.localStorage.getItem(LOGO_NAME);
+    if(source == '') source = '/imgs/default.jpg';
+    return source;
 }
 
 function setCompanyNameToLocalStorage(base64Img) {
@@ -149,6 +151,7 @@ function getDadosEmpresaHeader() {
                 document.getElementById("companyNameHeader").value = name;
                 setCompanyLogoToLocalStorage(base64Img);
             }
+            if(base64Img != "")
             if(base64Img != oldBase64Img) {
                 document.getElementById("companyLogoHeader").src = base64Img;
                 setCompanyLogoToLocalStorage(base64Img);

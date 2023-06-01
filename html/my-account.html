@@ -130,7 +130,9 @@
                       var base64Img = response.data.base64Img;
                       document.getElementById('name').value = companyData.company_name;
                       document.getElementById('email').value = companyData.user_email;
-                      document.getElementById('companyLogo').src = base64Img;
+                      if(base64Img !=  "") {
+                        document.getElementById('companyLogo').src = base64Img;
+                      }
                       MSG_EMAIL_CONFIRMATION_SENDED = `Enviado um link de confirma&ccedil;&atilde;o para seu e-mail ${companyData.user_email}. Acesse-o para reativar e acessar sua conta, ap&oacute;s isso, realize o login novamente.`
                   })
                     .catch(function (error) {
@@ -298,7 +300,7 @@
                 <label for="photo">Envie sua logo:</label>
                 <input type="file" class="form-control" style="width: 500px" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadImage(event)">
                 <!--<img id="companyLogo" hidden></img>-->
-                <img id="companyLogo" class="rounded float-left img-fluid mt-5" style="border-radius: 10px; max-width: 50%; height: auto;" src="./imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
+                <img id="companyLogo" class="rounded float-left img-fluid mt-5" style="border-radius: 10px; max-width: 50%; height: auto;" src="/imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
             </div>
             <div class="col">
               <div class="card-body pl-4  text-black">
