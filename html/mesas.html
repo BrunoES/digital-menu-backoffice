@@ -99,18 +99,42 @@
               cleanTableUtils("mesas_table");
             }
 
-            function ImagetoPrint(source) {
+            function ImagetoPrint(source, tableNumber) {
+              var base64ImgLogo = getCompanyLogoFromLocalStorage();
                 return "<html><head><scri"+"pt>function step1(){\n" +
                         "setTimeout('step2()', 10);}\n" +
                         "function step2(){window.print();window.close()}\n" +
-                        "</scri" + "pt></head><body onload='step1()'>\n" +
-                        "<center><img src='" + source + "' height='450px' width='450px'/></center></body></html>";
+                        "</scri" + "pt>" + 
+                        "<style> @page { size: auto;  margin: 0mm; } </style>" +
+                        "</head>" + 
+                        "<body onload='step1()'>\n" +
+                        "<center>" + 
+                        "<img src='" + base64ImgLogo + "' style='border-radius: 10px; max-width: 200px; height: auto;' />" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "</center>" + 
+                        "<center>" + 
+                        "<span style='font-size: 100px; font-family: sans-serif;'>Mesa " + tableNumber + "</span>" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "<br>" +
+                        "<span style='font-size: 25px; font-family: sans-serif;'>Acesse o card&aacute;pio on-line com o QRCode:</span>" +
+                        "<br>" +
+                        "<img src='" + source + "' height='450px' width='450px'/>" + 
+                        "</center></body></html>";
             }
 
-            function printQRCodeMesa(base64QRCode) {
+            function printQRCodeMesa(base64QRCode, tableNumber) {
               console.log(base64QRCode)
               popup = window.open(``, `Imprimir QRCode`, `height=500,width=500"`);
-              popup.document.write(ImagetoPrint(base64QRCode));
+              popup.document.getElementsByTagName('body')[0].innerHTML = '';
+              popup.document.write(ImagetoPrint(base64QRCode, tableNumber));
               popup.focus(); //required for IE
               // delay para que de tempo de carregar a imagem, antes de chamar a impressao.
               setTimeout(function () {

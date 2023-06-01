@@ -116,7 +116,7 @@ function setCompanyLogoToLocalStorage(base64Img) {
 
 function getCompanyLogoFromLocalStorage() {
     var source = window.localStorage.getItem(LOGO_NAME);
-    if(source == '') source = '/imgs/default.jpg';
+    //if(source == '') source = '/imgs/default.jpg';
     return source;
 }
 
@@ -135,6 +135,7 @@ function openImageExplorer(inputName) {
 
 function getDadosEmpresaHeader() {
     var oldBase64Img = getCompanyLogoFromLocalStorage();
+    if(oldBase64Img == '') oldBase64Img = '/imgs/default.jpg';
     var oldName = getCompanyNameFromLocalStorage();
 
     document.getElementById("companyLogoHeader").src = oldBase64Img;

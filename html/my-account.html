@@ -225,6 +225,14 @@
                 });
                 cleanForm();
             }
+
+            function enablePasswordChange() {
+              var password = document.getElementById('password');
+              var passwordConfirmation = document.getElementById('passwordConfirmation');
+
+              password.disabled = !password.disabled;
+              passwordConfirmation.disabled = !passwordConfirmation.disabled;
+            }
         </script>
     </head>
     <body onload="init()">
@@ -297,7 +305,8 @@
         <div class="justify-content-center align-items-center container py-5">
           <div class="row g-0">
             <div class="col">
-                <label for="photo">Envie sua logo:</label>
+                <h4 class="fw-normal m-2 pb-3" style="letter-spacing: 1px;">Envie sua logo</h4>
+                <!--<label for="photo">Envie sua logo:</label>-->
                 <input type="file" class="form-control" style="width: 500px" id="photo" placeholder="Selecione uma foto para o produto" accept="image/jpeg, image/png, image/jpg" onchange="loadImage(event)">
                 <!--<img id="companyLogo" hidden></img>-->
                 <img id="companyLogo" class="rounded float-left img-fluid mt-5" style="border-radius: 10px; max-width: 50%; height: auto;" src="/imgs/default.jpg" onclick="openImageExplorer('photo');"></img>
@@ -329,12 +338,20 @@
                   </div>
 
                   <h5 class="fw-normal m-2 pb-3" style="letter-spacing: 1px;">ou ent&aring;o sua senha de acesso: </h5>
-                  <div class="form-outline mb-4">
-                      <input type="password" id="password" class="form-control form-control-lg" placeholder="Definir uma nova Senha?" maxlength="12" onblur="validaSenha(this.value)"/>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="changePassword" onclick="enablePasswordChange()">
+                    <label class="form-check-label" for="changePassword">
+                      Quero alterar minha senha
+                    </label>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" id="passwordConfirmation" class="form-control form-control-lg" placeholder="Confirme sua senha" maxlength="12" onblur="validaSenhasIguais()"/>
+                      <input type="password" id="password" class="form-control form-control-lg" placeholder="Definir uma nova Senha?" maxlength="12" onblur="validaSenha(this.value)" disabled/>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="password" id="passwordConfirmation" class="form-control form-control-lg" placeholder="Confirme sua nova senha" maxlength="12" onblur="validaSenhasIguais()" disabled/>
                   </div>
 
                   <div id="liveAlertPlaceholder" class="fixed-bottom">
