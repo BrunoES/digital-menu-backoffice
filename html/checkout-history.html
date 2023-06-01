@@ -126,7 +126,7 @@
                       var pedidos = response.data;
                       console.dir(pedidos)
                       pedidos.forEach(pedido => {
-                        insertPedido(pedido.id_pedido, pedido.date_hour_formatted, pedido.customer_name, formatPrice(pedido.total));
+                        insertPedido(pedido.id_pedido, pedido.table_number, pedido.date_hour_formatted, pedido.customer_name, formatPrice(pedido.total));
                       });
                   })
                   .catch(function (error) {
@@ -136,9 +136,10 @@
                   });
             }
 
-            function getPedidoById(checkoutId) {
+            function getPedidoById(checkoutId, tableNumber) {
               cleanTableUtils("itens_pedido_table");
               document.getElementById('idPedido').value = checkoutId;
+              document.getElementById('numeroMesa').value = tableNumber;
 
               console.log(`${ENDPOINT}/${checkoutId}`);
 
@@ -240,13 +241,22 @@
       <div class="form-group form-inline" style="margin-top: 100px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
             <h2>Hist&#243;rico de Pedidos</h2>
             
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-            <label for="initialDate">Data Inicial</label>
-            <input type="text" class="form-control" id="initialDate" name="initialDate" placeholder="de Data Inicial" readonly/>
-            
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-            <label for="finalDate">Data Final</label>
-            <input type="text" class="form-control" id="finalDate" name="finalDate" placeholder="até Data Final" readonly>
+            <div class="input-group m-3">
+              <div class="m-2">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <label for="initialDate">Data Inicial</label>
+                <input type="text" class="form-control" id="initialDate" name="initialDate" placeholder="de Data Inicial" readonly/>
+              </div>
+              
+              <div class="m-2">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <label for="finalDate">Data Final</label>
+                <input type="text" class="form-control" id="finalDate" name="finalDate" placeholder="até Data Final" readonly>
+              </div>
+              
+            </div>
+
+
 
             <div class="m-1">
                 <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
@@ -274,8 +284,10 @@
                   <div class="modal-body">
                     <!--Table de items do pedido -->
                     <div class="overflow-auto h-50" style="min-height: 300px;">
+                      <label for="numeroMesa">Mesa:</label>
+                      <input type="number" style="border: none; font-size: 17px;" class="form-control" id="numeroMesa" placeholder="Mesa" readonly/>
                       <label for="observacao">Observa&ccedil;&atilde;o:</label>
-                      <textarea class="form-control m-2 w-75" rows="2" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o"></textarea>
+                      <textarea class="form-control m-1 w-75" rows="2" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o"></textarea>
                       <table class="table m-2" id="itens_pedido_table">
                           <thead>
                               <tr>
@@ -304,6 +316,7 @@
                     <thead>
                         <tr>
                         <th scope="col">n&deg; Pedido</th>
+                        <th scope="col">n&deg; Mesa</th>
                         <th scope="col">Data/Hora</th>
                         <th scope="col">Nome do Cliente</th>
                         <th scope="col">Total</th>
