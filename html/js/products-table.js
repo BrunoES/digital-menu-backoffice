@@ -2,7 +2,7 @@ function insertProductTable(id, name, description, price) {
     tabBody=document.getElementById("product_table");
     var row= createRow();
 
-    var columnId = createTextColumn(id);
+    var columnId = createTextColumn(id, CENTRALIZED);
     row.appendChild(columnId);
 
     var columnName = createTextColumn(name);
@@ -11,7 +11,7 @@ function insertProductTable(id, name, description, price) {
     var columnDescription = createTextColumn(description);
     row.appendChild(columnDescription);
 
-    var columnPrice = createTextColumn(price);
+    var columnPrice = createTextColumn(price, CENTRALIZED);
     row.appendChild(columnPrice);
 
     var deleteButton = createHTMLButton("Excluir", `onClickDelete('${id}')`, RED);

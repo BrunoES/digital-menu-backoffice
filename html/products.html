@@ -307,7 +307,7 @@
 
             <!-- Right elements -->
             <div class="d-flex align-items-center">
-                <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader"/>
+                <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader" disabled />
                 <div style="width: 50px; margin: 5px;">
                     <img id="companyLogoHeader" class="rounded" style="border-radius: 10px; max-width: 100%; height: auto;" src="getCompanyLogoFromLocalStorage();"></img>
                 </div>
@@ -349,22 +349,20 @@
             <div id="liveDialogPlaceholder" class="fixed-bottom">
             </div>
             <br/>
-            <div class="overflow-auto h-50">
-                <table class="table m-2" id="product_table">
-                    <thead>
-                        <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Descri&ccedil;&atilde;o</th>
-                        <th scope="col">Pre&ccedil;o</th>
-                        <th scope="col">Excluir</th>
-                        <th scope="col">Editar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+            <table class="table m-2" id="product_table">
+                <thead>
+                    <tr>
+                    <th scope="col" style="text-align: center">ID</th>
+                    <th scope="col" style="text-align: center">Nome</th>
+                    <th scope="col" style="text-align: center">Descri&ccedil;&atilde;o</th>
+                    <th scope="col" style="text-align: center">Pre&ccedil;o</th>
+                    <th scope="col" style="text-align: center">Excluir</th>
+                    <th scope="col" style="text-align: center">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </body>
 </html>

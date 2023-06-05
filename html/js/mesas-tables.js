@@ -1,8 +1,8 @@
 function insertMesasTable(tableNumber, complement, base64QRCode) {
     tabBody=document.getElementById("mesas_table");
     var row= createRow();
-
-    var columnTableNumber = createTextColumn(tableNumber);
+    
+    var columnTableNumber = createTextColumn(tableNumber, CENTRALIZED);
     row.appendChild(columnTableNumber);
 
     var columnComplement = createTextColumn(complement);

@@ -225,7 +225,7 @@
 
           <!-- Right elements -->
           <div class="d-flex align-items-center">
-            <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader"/>
+            <input type="text" class="m-2" style="color:aliceblue; font-weight: bold; font-size: 20px; text-align: right; background-color: #ff6219; border: none;" id="companyNameHeader" disabled />
             <div style="width: 50px; margin: 5px;">
               <img id="companyLogoHeader" class="rounded" style="border-radius: 10px; max-width: 100%; height: auto;" src="getCompanyLogoFromLocalStorage();"></img>
             </div>
@@ -239,94 +239,91 @@
       </nav>
       <!-- Navbar -->
       <div class="form-group form-inline" style="margin-top: 100px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;">
-            <h2>Hist&#243;rico de Pedidos</h2>
-            
-            <div class="input-group m-3">
-              <div class="m-2">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-                <label for="initialDate">Data Inicial</label>
-                <input type="text" class="form-control" id="initialDate" name="initialDate" placeholder="de Data Inicial" readonly/>
+        <h2>Hist&#243;rico de Pedidos</h2>
+          
+        <div class="input-group m-3">
+          <div class="m-2">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <label for="initialDate">Data Inicial</label>
+            <input type="text" class="form-control" id="initialDate" name="initialDate" placeholder="de Data Inicial" readonly/>
+          </div>
+          
+          <div class="m-2">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <label for="finalDate">Data Final</label>
+            <input type="text" class="form-control" id="finalDate" name="finalDate" placeholder="até Data Final" readonly>
+          </div>
+          
+        </div>
+
+
+
+        <div class="m-1">
+            <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
+            <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(0);">Hoje</button>
+            <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(7);">&Uacute;ltimos 7 dias</button>
+            <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(30);">&Uacute;ltimos 30 dias</button>
+            <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(90);">&Uacute;ltimos 90 dias</button>
+            <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(180);">&Uacute;ltimos 6 meses</button>
+        </div>
+        <div id="liveAlertPlaceholder" class="fixed-bottom">
+        </div>
+        <div id="liveDialogPlaceholder" class="fixed-bottom">
+        </div>
+        <br/>
+
+        <!-- Modal -->
+        <div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">#Pedido </h5>
+                <input type="number" style="border: none; font-size: 20px;" class="form-control m-2" id="idPedido" placeholder="ID Pedido" readonly/>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              
-              <div class="m-2">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-                <label for="finalDate">Data Final</label>
-                <input type="text" class="form-control" id="finalDate" name="finalDate" placeholder="até Data Final" readonly>
-              </div>
-              
-            </div>
-
-
-
-            <div class="m-1">
-                <button type="button" class="btn btn-success" onclick="getPedidos();">Consultar</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(0);">Hoje</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(7);">&Uacute;ltimos 7 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(30);">&Uacute;ltimos 30 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(90);">&Uacute;ltimos 90 dias</button>
-                <button type="button" class="btn btn-primary" onclick="getPedidosUltimosNDias(180);">&Uacute;ltimos 6 meses</button>
-            </div>
-            <div id="liveAlertPlaceholder" class="fixed-bottom">
-            </div>
-            <div id="liveDialogPlaceholder" class="fixed-bottom">
-            </div>
-            <br/>
-
-            <!-- Modal -->
-            <div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">#Pedido </h5>
-                    <input type="number" style="border: none; font-size: 20px;" class="form-control m-2" id="idPedido" placeholder="ID Pedido" readonly/>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <!--Table de items do pedido -->
-                    <div class="overflow-auto h-50" style="min-height: 300px;">
-                      <label for="numeroMesa">Mesa:</label>
-                      <input type="number" style="border: none; font-size: 17px;" class="form-control" id="numeroMesa" placeholder="Mesa" readonly/>
-                      <label for="observacao">Observa&ccedil;&atilde;o:</label>
-                      <textarea class="form-control m-1 w-75" rows="2" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o"></textarea>
-                      <table class="table m-2" id="itens_pedido_table">
-                          <thead>
-                              <tr>
-                              <th scope="col">ID Produto</th>
-                              <th scope="col">Nome Produto</th>
-                              <th scope="col">Quantidade</th>
-                              <th scope="col">Pre&ccedil;o R$</th>
-                              <th scope="col">Sub Total</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                          </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                  </div>
+              <div class="modal-body">
+                <!--Table de items do pedido -->
+                <div style="min-height: 300px;">
+                  <label for="numeroMesa">Mesa:</label>
+                  <input type="number" style="border: none; font-size: 17px;" class="form-control" id="numeroMesa" placeholder="Mesa" readonly/>
+                  <label for="observacao">Observa&ccedil;&atilde;o:</label>
+                  <textarea class="form-control m-1 w-75" style="border: none" rows="2" id="observacao" maxlength="100" placeholder="Observa&ccedil;&atilde;o" readonly></textarea>
+                  <table class="table m-2" id="itens_pedido_table">
+                      <thead>
+                          <tr>
+                          <th scope="col" style="text-align: center">ID Produto</th>
+                          <th scope="col" style="text-align: center">Nome Produto</th>
+                          <th scope="col" style="text-align: center">Quantidade</th>
+                          <th scope="col" style="text-align: center">Pre&ccedil;o R$</th>
+                          <th scope="col" style="text-align: center">Sub Total</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
                 </div>
               </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+              </div>
             </div>
-
-            <div class="overflow-auto h-50">
-                <table class="table m-2" id="historico_pedidos_table">
-                    <thead>
-                        <tr>
-                        <th scope="col">n&deg; Pedido</th>
-                        <th scope="col">n&deg; Mesa</th>
-                        <th scope="col">Data/Hora</th>
-                        <th scope="col">Nome do Cliente</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Detalhes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+          </div>
         </div>
-    </body>
+        <table class="table m-2" id="historico_pedidos_table">
+            <thead>
+                <tr>
+                <th scope="col" style="text-align: center">n&deg; Pedido</th>
+                <th scope="col" style="text-align: center">n&deg; Mesa</th>
+                <th scope="col" style="text-align: center">Data/Hora</th>
+                <th scope="col" style="text-align: center">Nome do Cliente</th>
+                <th scope="col" style="text-align: center">Total</th>
+                <th scope="col" style="text-align: center">Detalhes</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+      </div>
+  </body>
 </html>

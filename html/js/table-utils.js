@@ -1,6 +1,7 @@
 const GREEN = '#118c05';
 const RED = '#Ea2d30';
 const LIGHT_BLUE_WHITE = '#9BBCC1';
+const CENTRALIZED = true;
 
 function createRow() {
     var row=document.createElement("tr");
@@ -8,15 +9,17 @@ function createRow() {
     return row;
 }
 
-function createTextColumn(valor) {
+function createTextColumn(valor, center) {
     var cell = document.createElement("td");
+    if(center) cell.setAttribute("style", `text-align: center`);
     var node=document.createTextNode(valor);
     cell.appendChild(node);
     return cell;
 }
 
-function createHTMLButton(name, onClick, backgroundColor) {
+function createHTMLButton(name, onClick, backgroundColor, center=true) {
     var cell = document.createElement("td");
+    if(center) cell.setAttribute("style", `text-align: center`);
     var button = document.createElement("button");
     button.setAttribute("onClick", onClick);
     button.setAttribute("style", `background-color: ${backgroundColor}; color: white; border-radius: 10px`);
