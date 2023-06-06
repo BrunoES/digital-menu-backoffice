@@ -113,6 +113,14 @@ fs.readFile('./html/panel.html', 'utf8', (err, data) => {
   htmlPainel = data;
 });
 
+fs.readFile('./html/js/md5.js', 'utf8', (err, data) => {
+  if (err) {
+      console.error(err);
+      return;
+  }
+  jsMD5 = data;
+});
+
 fs.readFile('./html/js/utils.js', 'utf8', (err, data) => {
   if (err) {
       console.error(err);
@@ -250,6 +258,10 @@ http.createServer(function (req, res) {
     case "/js/utils.js":
         res.writeHead(200);
         res.end(jsUtils);
+        break
+    case "/js/md5.js":
+        res.writeHead(200);
+        res.end(jsMD5);
         break
     case "/js/auth-utils.js":
         res.writeHead(200);

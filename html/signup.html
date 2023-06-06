@@ -5,6 +5,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="./js/auth-utils.js"></script>
         <script type="text/javascript" src="./js/utils.js"></script>
+        <script type="text/javascript" src="./js/md5.js"></script>
         <script type="text/javascript">
             const ENDPOINT = `${BASE_URL}/signup`;
 
@@ -90,10 +91,12 @@
                 return;
               }
                 
+              var md5Password = md5(password);
+
               axios.post(ENDPOINT, {
                     name,
                     user,
-                    password
+                    password : md5Password
                 })
                 .then(function (response) {
                     console.dir(response);
