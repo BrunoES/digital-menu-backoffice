@@ -25,6 +25,7 @@
             var MSG_EMAIL_CONFIRMATION_SENDED = "";
 
             function init() {
+              document.getElementById("hideAll").style.display = "none";
               getDadosEmpresaHeader();
               isAuthenticatedInternalPages();
               getDadosEmpresa();
@@ -236,7 +237,7 @@
             }
         </script>
     </head>
-    <body onload="init()">
+    <body onload="init()" id="hideAll">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff6219;">
         <!-- Container wrapper -->

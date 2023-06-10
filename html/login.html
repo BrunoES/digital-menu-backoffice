@@ -12,6 +12,8 @@
             const MSG_INVALID_CREDENTIALS = "E-mail ou senha inv&aacute;lidos";
 
             function init() {
+              document.getElementById("hideAll").style.display = "none";
+              
               isAuthenticatedExternalPages();
 
               var inputPassword = document.getElementById('password');
@@ -56,7 +58,7 @@
             }
         </script>
     </head>
-    <body onload="init()">
+    <body onload="init()" id="hideAll">
         <section class="vh-100" style="background-color: coral;">
             <div class="container py-5 h-100">
               <div class="row d-flex justify-content-center align-items-center h-100">

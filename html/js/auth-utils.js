@@ -36,7 +36,8 @@ function isAuthenticatedExternalPages() {
           window.location.href= "/menu";
       })
       .catch(function (error) {
-          console.log("User not authenticated");
+        document.getElementById("hideAll").style.display = "block";
+        console.log("User not authenticated");
       });
   }
 
@@ -48,6 +49,7 @@ function isAuthenticatedInternalPages() {
 
     axios.get(`${BASE_URL}/mock-endpoint`, getAuthorizationHeader())
         .then(function (response) {
+            document.getElementById("hideAll").style.display = "block";
             console.log("User authenticated");
         })
         .catch(function (error) {

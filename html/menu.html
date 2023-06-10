@@ -9,13 +9,14 @@
         <script type="text/javascript">
           
           function init() {
+            document.getElementById("hideAll").style.display = "none";
             getDadosEmpresaHeader();
             console.log(retrieveToken());
             isAuthenticatedInternalPages();
           }
         </script>
     </head>
-    <body onload="init();">
+    <body onload="init();" id="hideAll">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #ff6219;">
         <!-- Container wrapper -->
