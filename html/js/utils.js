@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:8080";
+//const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://digital-menu-api-0.onrender.com";
 
 const MSG_READY_TO_EDIT = "Altere os campos do formul&aacute;rio e em seguida salve suas altera&ccedil;&otilde;es.";
 const MSG_FIELD_EMAIL_ERROR = "E-mail inv&aacute;lido, confira.";
