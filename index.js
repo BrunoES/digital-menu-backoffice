@@ -24,6 +24,7 @@ var htmlPainel = '';
 var imgLogo = fs.readFileSync('./html/imgs/logo.JPG');
 var imgLogoBranco = fs.readFileSync('./html/imgs/logo-branco.JPG');
 var defaultImg = fs.readFileSync('./html/imgs/default.jpg');
+var favIcontImg = fs.readFileSync('./html/imgs/favicon.png');
 
 fs.readFile('./html/signup.html', 'utf8', (err, data) => {
   if (err) {
@@ -211,6 +212,12 @@ http.createServer(function (req, res) {
         res.writeHead(200);
         res.end(defaultImg);
         break
+    case "/imgs/favicon.png":
+        res.setHeader("Content-Type", "image/jpeg");
+        res.writeHead(200);
+        res.end(favIcontImg);
+        break
+
     case "/change-password":
         res.writeHead(200);
         res.end(htmlChangePassword);
