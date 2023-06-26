@@ -295,7 +295,7 @@ http.createServer(function (req, res) {
         res.end(jsHistoricoPedidosTables);
         break
     default:
-      res.writeHead(404);
+      res.writeHead(204);
       res.end("Resource not found.");
 }
 
