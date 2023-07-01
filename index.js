@@ -258,6 +258,7 @@ http.createServer(function (req, res) {
         res.writeHead(200);
         res.end(htmlMenu);
         break
+    case "/":
     case "/login":
         res.writeHead(200);
         res.end(htmlLogin);
